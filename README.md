@@ -1,2 +1,3 @@
 # SurveyApp
-CSCB024 practical project.
+
+Practical project for CSCB024

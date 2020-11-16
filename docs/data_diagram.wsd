@@ -1,0 +1,36 @@
+@startuml DataModel
+class User {
+   -int Id
+   -string Email
+   -string EnglishLevelSelfDefined
+   -string EnglishLevelCertified
+   -Survey[] Surveys
+}
+
+class Survey{
+   -int Id
+   -Mapping[] Mappings
+   -bool IsCompleted
+}
+
+class CategoryTextMapping {
+   -int Id
+   -TextEntry TextEntry
+   -Category Category
+}
+
+class TextEntry {
+   -int Id
+   -string Text
+}
+
+class Category {
+   -int Id
+   -string Name
+}
+
+User --> "many" Survey : contains
+Survey --> "many" CategoryTextMapping : contains
+TextEntry <-- CategoryTextMapping
+Category <-- CategoryTextMapping
+@enduml

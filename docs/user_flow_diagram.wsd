@@ -1,0 +1,15 @@
+@startuml User Flow
+NewUser -> (Enter email)
+(Enter email) --> (Enter personal details)
+(Enter personal details) --> (Submit personal details)
+(Submit personal details)  --> (Assign text to category)
+(Assign text to category) --> (Assign text to category) : until all texts are assigned
+(Assign text to category) --> (Submit survey)
+(Submit survey) --> (Start new survey)
+(Assign text to category) --> (Start over)
+(Start over) --> (Assign text to category)
+
+ExistingUser -> (Enter existing email)
+(Enter existing email) --> (Load previous progress)
+(Load previous progress) --> (Assign text to category)
+@enduml
