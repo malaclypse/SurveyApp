@@ -5,18 +5,26 @@ class User {
    -string EnglishLevelSelfDefined
    -string EnglishLevelCertified
    -Survey[] Surveys
+   -DateTime CreatedDate
+   -DateTime LastModifiedDate
 }
 
 class Survey{
    -int Id
    -Mapping[] Mappings
    -bool IsCompleted
+   -bool IsDeleted
+   -DateTime CreatedDate
+   -DateTime LastModifiedDate
 }
 
 class CategoryTextMapping {
    -int Id
    -TextEntry TextEntry
    -Category Category
+   -bool IsDeleted
+   -DateTime CreatedDate
+   -DateTime LastModifiedDate
 }
 
 class TextEntry {
