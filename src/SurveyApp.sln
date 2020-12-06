@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyApp", "SurveyApp\SurveyApp.csproj", "{0DBB8033-D8DA-41A1-BCBF-C0FB1BC17950}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyApp.Data", "SurveyApp.Data\SurveyApp.Data.csproj", "{81C6081A-C40A-468E-B9C1-BF254A277680}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyApp.Data", "SurveyApp.Data\SurveyApp.Data.csproj", "{81C6081A-C40A-468E-B9C1-BF254A277680}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyApp.Tests", "SurveyApp.Tests\SurveyApp.Tests.csproj", "{A7839C60-5B04-4A28-BF82-9C1622138966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyApp.Tests", "SurveyApp.Tests\SurveyApp.Tests.csproj", "{A7839C60-5B04-4A28-BF82-9C1622138966}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{12A76725-C6D7-4617-B493-F6B6408421D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyApp.Web", "SurveyApp.Web\SurveyApp.Web.csproj", "{9D683980-947F-4C49-8D90-0CE44E85F978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0DBB8033-D8DA-41A1-BCBF-C0FB1BC17950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0DBB8033-D8DA-41A1-BCBF-C0FB1BC17950}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0DBB8033-D8DA-41A1-BCBF-C0FB1BC17950}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0DBB8033-D8DA-41A1-BCBF-C0FB1BC17950}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81C6081A-C40A-468E-B9C1-BF254A277680}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{81C6081A-C40A-468E-B9C1-BF254A277680}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81C6081A-C40A-468E-B9C1-BF254A277680}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,6 +25,10 @@ Global
 		{A7839C60-5B04-4A28-BF82-9C1622138966}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7839C60-5B04-4A28-BF82-9C1622138966}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7839C60-5B04-4A28-BF82-9C1622138966}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D683980-947F-4C49-8D90-0CE44E85F978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D683980-947F-4C49-8D90-0CE44E85F978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D683980-947F-4C49-8D90-0CE44E85F978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D683980-947F-4C49-8D90-0CE44E85F978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

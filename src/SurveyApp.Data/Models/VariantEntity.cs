@@ -2,7 +2,7 @@
 
 namespace SurveyApp.Data.Models
 {
-    public class Variant
+    public class VariantEntity
     {
         public int VariantId { get; set; }
 
