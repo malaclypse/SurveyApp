@@ -23,12 +23,14 @@ export class RegistrationForm extends Component {
     this.submitForm.bind(this);
     this.state = {
       email: null,
-      sex: null,
+      gender: null,
       nativeLanguage: null,
       englishLevel: null,
       dropdownOpen: false,
       value: "Home",
-      redirect: false
+      redirect: false,
+      dropDownValue: null,
+      dropDownText: "English level(self- assessed)"
     };
 
     this.toggle = this.toggle.bind(this);
@@ -52,7 +54,7 @@ export class RegistrationForm extends Component {
     e.preventDefault();
     var request = {
       email: this.state.email,
-      sex: this.state.sex,
+      gender: this.state.gender,
       nativeLanguage: this.state.nativeLanguage,
       englishLevel: this.state.englishLevel
     };
@@ -89,14 +91,14 @@ export class RegistrationForm extends Component {
             </FormGroup>
           </Col>
           <Col md={4}>
-            <Label for="sex">Sex</Label>
-            <FormGroup id="sex" check>
+            <Label for="gender">gender</Label>
+            <FormGroup id="gender" check>
               <Label check>
                 <Input
                   type="radio"
-                  name="sex"
+                  name="gender"
                   id="male"
-                  onChange={event => this.setState({ sex: event.target.id })}
+                  onChange={event => this.setState({ gender: event.target.id })}
                 />{" "}
                 Male
               </Label>
@@ -105,9 +107,9 @@ export class RegistrationForm extends Component {
               <Label check>
                 <Input
                   type="radio"
-                  name="sex"
+                  name="gender"
                   id="female"
-                  onChange={event => this.setState({ sex: event.target.id })}
+                  onChange={event => this.setState({ gender: event.target.id })}
                 />{" "}
                 Female
               </Label>
@@ -116,9 +118,9 @@ export class RegistrationForm extends Component {
               <Label check>
                 <Input
                   type="radio"
-                  name="sex"
-                  id="notSaying"
-                  onChange={event => this.setState({ sex: event.target.id })}
+                  name="gender"
+                  id="notSpecified"
+                  onChange={event => this.setState({ gender: event.target.id })}
                 />{" "}
                 Prefer not to say
               </Label>
@@ -128,9 +130,7 @@ export class RegistrationForm extends Component {
           <br />
           <Col md={4}>
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-              <DropdownToggle caret>
-                English level (self-assessed)
-              </DropdownToggle>
+              <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
               <DropdownMenu>
                 <DropdownItem header>
                   English level (self-assessed)
@@ -139,7 +139,9 @@ export class RegistrationForm extends Component {
                   id="level0"
                   onClick={event =>
                     this.setState({
-                      englishLevel: event.currentTarget.id
+                      dropDownValue: event.currentTarget.id,
+                      englishLevel: event.currentTarget.id,
+                      dropDownText: event.currentTarget.textContent
                     })
                   }
                 >
@@ -149,7 +151,9 @@ export class RegistrationForm extends Component {
                   id="level1"
                   onClick={event =>
                     this.setState({
-                      englishLevel: event.currentTarget.id
+                      dropDownValue: event.currentTarget.id,
+                      englishLevel: event.currentTarget.id,
+                      dropDownText: event.currentTarget.textContent
                     })
                   }
                 >
@@ -159,7 +163,9 @@ export class RegistrationForm extends Component {
                   id="level2"
                   onClick={event =>
                     this.setState({
-                      englishLevel: event.currentTarget.id
+                      dropDownText: event.currentTarget.textContent,
+                      englishLevel: event.currentTarget.id,
+                      dropDownValue: event.currentTarget.id
                     })
                   }
                 >
@@ -169,7 +175,9 @@ export class RegistrationForm extends Component {
                   id="level3"
                   onClick={event =>
                     this.setState({
-                      englishLevel: event.currentTarget.id
+                      dropDownText: event.currentTarget.textContent,
+                      englishLevel: event.currentTarget.id,
+                      dropDownValue: event.currentTarget.id
                     })
                   }
                 >
@@ -179,7 +187,9 @@ export class RegistrationForm extends Component {
                   id="level4"
                   onClick={event =>
                     this.setState({
-                      englishLevel: event.currentTarget.id
+                      dropDownText: event.currentTarget.textContent,
+                      englishLevel: event.currentTarget.id,
+                      dropDownValue: event.currentTarget.id
                     })
                   }
                 >
@@ -189,7 +199,9 @@ export class RegistrationForm extends Component {
                   id="level5"
                   onClick={event =>
                     this.setState({
-                      englishLevel: event.currentTarget.id
+                      dropDownText: event.currentTarget.textContent,
+                      englishLevel: event.currentTarget.id,
+                      dropDownValue: event.currentTarget.id
                     })
                   }
                 >
