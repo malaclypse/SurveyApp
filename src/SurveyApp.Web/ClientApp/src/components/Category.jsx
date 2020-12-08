@@ -1,10 +1,14 @@
 ﻿import React, { Component } from "react";
-
+import { ListGroup, ListGroupItem, Col } from "reactstrap";
 export class Category extends Component {
   render() {
     return (
       <React.Fragment>
-        <div id={this.props.categoryId}>category {this.props.categoryId}</div>
+        <Col>
+          <ListGroup id={this.props.categoryId}>
+            <ListGroupItem>{this.props.categoryId}</ListGroupItem>
+          </ListGroup>
+        </Col>
       </React.Fragment>
     );
   }
