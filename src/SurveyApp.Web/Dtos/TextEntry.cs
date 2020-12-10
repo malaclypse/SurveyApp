@@ -1,4 +1,4 @@
-﻿namespace SurveyApp.Data.Models
+﻿namespace SurveyApp.Web.Dtos
 {
     public class TextEntry
     {

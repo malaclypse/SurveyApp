@@ -12,9 +12,9 @@ namespace SurveyApp.Data
             _connectionString = connectionString;
         }
 
-        public DbSet<User> User { get; set; }
+        public DbSet<UserEntity> User { get; set; }
 
-        public DbSet<Survey> Survey { get; set; }
+        public DbSet<SurveyEntity> Survey { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -25,14 +25,14 @@ namespace SurveyApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<UserEntity>(entity =>
             {
                 entity.HasKey(e => e.Email);
                 entity.Property(e => e.Email).IsRequired();
                 entity.HasMany(e => e.Surveys);
             });
 
-            modelBuilder.Entity<Survey>(entity =>
+            modelBuilder.Entity<SurveyEntity>(entity =>
             {
                 entity.HasKey(e => e.SurveyId);
                 entity.HasOne(e => e.User)

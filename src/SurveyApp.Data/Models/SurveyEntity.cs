@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class Survey
+    public class SurveyEntity
     {
         public int SurveyId { get; set; }
 
@@ -18,7 +18,7 @@
 
         public DateTime FinishedOnDate { get; set; }
 
-        public User User { get; set; }
+        public UserEntity User { get; set; }
 
         public string UserEmail { get; set; }
     }

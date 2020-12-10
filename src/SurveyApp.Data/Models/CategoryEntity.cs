@@ -1,6 +1,6 @@
 ﻿namespace SurveyApp.Data.Models
 {
-    public class Category
+    public class CategoryEntity
     {
         public int Id { get; set; }
 
