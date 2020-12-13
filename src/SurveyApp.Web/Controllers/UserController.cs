@@ -1,34 +1,48 @@
 ﻿namespace SurveyApp.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
-    using SurveyApp.Data.Models;
-    using SurveyApp.Web.Dtos;
+    using SurveyApp.Services.Abstract;
+    using SurveyApp.Services.Dtos;
+    using System.Threading.Tasks;
 
-    [Route("api/[controller]")]
+    [Route("api/user")]
+    [Produces("application/json")]
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserService _userService;
 
-        private static readonly List<User> Users = new List<User>();
-
-        private readonly ILogger<UserController> _logger;
-
-        public UserController(ILogger<UserController> logger)
+        public UserController(IUserService userService)
         {
-            _logger = logger;
+            _userService = userService;
         }
 
-        // POST: api/user
         [HttpPost]
-        public async Task<ActionResult<UserEntity>> PostTodoItem(User user)
+        public async Task<User> Post([FromBody] CreateUserRequest userRequest)
         {
-            Users.Add(user);
+            User response = null;
+            if (userRequest != null)
+            {
+                response = await _userService.InsertAsync(userRequest);
+            }
+            return response;
+        }
 
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-            return CreatedAtAction(nameof(User), new { email = user.Email }, user);
+        [HttpPut("{email}/")]
+        public async Task<User> Put([FromRoute] string email, [FromBody] UpdateUserRequest userRequest)
+        {
+            User response = null;
+            if (userRequest != null)
+            {
+                response = await _userService.UpdateAsync(email, userRequest);
+            }
+            return response;
+        }
+
+        [HttpGet("{email}/")]
+        public async Task<User> Get([FromRoute] string email)
+        {
+            return await _userService.GetAsync(email);
         }
     }
 }
