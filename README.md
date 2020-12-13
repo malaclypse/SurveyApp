@@ -1,5 +1,12 @@
 # SurveyApp
 
+## Table of contents
+- [SurveyApp](#surveyapp)
+  * [Project description](#project-description)
+  * [Tech Stack](#tech-stack)
+  * [Endpoints](#endpoints)
+  * [Database Setup](#database-setup)
+
 ## Project description
 
 Practical project for CSCB024
