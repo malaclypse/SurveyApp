@@ -46,6 +46,7 @@ MySQL Server 8.0.22
 | MappingController   | user/{email}/survey/{id}/map      | GET    | -                   | IEnumerable<Mapping>   | Get all category-text mappings for a survey                         | Not started |
 | MappingController   | user/{email}/survey/{id}/map/{id} | GET    | -                   | Mapping                | Get a category-text mapping by id                                   | Not started |
 | MappingController   | user/{email}/survey/{id}/map/{id} | DELETE | -                   | -                      | Delete a category-text mapping                                      | Not started |
+ | MappingController   | user/{email}/survey/{id}/map     | POST   | CreateMappingRequest| -                | Create a category-text mapping                                | Not started |
 
 <br/>
 The Postman collection with the first three working endpoints can be found here: [Postman](/docs/Survey API.postman_collection.json)
