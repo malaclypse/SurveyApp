@@ -2,9 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SurveyApp.Data;
+using SurveyApp.Services;
+using SurveyApp.Services.Abstract;
 
 namespace SurveyApp.Web
 {
@@ -28,6 +32,13 @@ namespace SurveyApp.Web
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSwaggerGen();
+
+            services.AddDbContext<SurveyContext>(options => 
+                options.UseMySQL(Configuration["ConnectionStrings:SurveyDatabase"]));
+
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,11 +63,9 @@ namespace SurveyApp.Web
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
-
+           
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";

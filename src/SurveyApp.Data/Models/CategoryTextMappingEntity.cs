@@ -11,6 +11,8 @@ namespace SurveyApp.Data.Models
         public TextEntryEntity TextEntry { get; set; }
         
         public CategoryEntity Category { get; set; }
+
+        public SurveyEntity Survey { get; set; }
         
         public bool IsDeleted { get; set; }
         
