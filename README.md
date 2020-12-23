@@ -27,6 +27,8 @@ React 16.0.0
 
 MySQL Server 8.0.22
 
+Diagram:
+<img src="https://raw.githubusercontent.com/malaclypse/SurveyApp/main/docs/sql_diagram.png">
 <br/>
 
 ## Endpoints
