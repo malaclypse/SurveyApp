@@ -9,15 +9,15 @@ namespace SurveyApp.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Group",
                 columns: table => new
                 {
-                    CategoryId = table.Column<int>(nullable: false)
+                    GroupId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.CategoryId);
+                    table.PrimaryKey("PK_Group", x => x.GroupId);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,7 +37,7 @@ namespace SurveyApp.Data.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Email = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(maxLength: 254, nullable: false),
                     EnglishLevel = table.Column<int>(nullable: false),
                     NativeLanguage = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -53,7 +53,7 @@ namespace SurveyApp.Data.Migrations
                 name: "Variant",
                 columns: table => new
                 {
-                    VariantId = table.Column<int>(nullable: false)
+                    VariantId = table.Column<int>(maxLength: 100, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Text1Id = table.Column<int>(nullable: false),
                     Text2Id = table.Column<int>(nullable: false),
@@ -122,66 +122,74 @@ namespace SurveyApp.Data.Migrations
                 name: "Survey",
                 columns: table => new
                 {
-                    SurveyId = table.Column<int>(nullable: false)
+                    SurveyId = table.Column<int>(maxLength: 100, nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     VariantId = table.Column<int>(nullable: false),
+                    UserEmail = table.Column<string>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: true),
-                    FinishedOnDate = table.Column<DateTime>(nullable: true),
-                    UserEmail = table.Column<string>(nullable: true)
+                    FinishedOnDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Survey", x => x.SurveyId);
+                    table.PrimaryKey("PK_Survey", x => new { x.SurveyId, x.UserEmail, x.VariantId });
                     table.ForeignKey(
                         name: "FK_Survey_User_UserEmail",
                         column: x => x.UserEmail,
                         principalTable: "User",
                         principalColumn: "Email",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Survey_Variant_VariantId",
+                        column: x => x.VariantId,
+                        principalTable: "Variant",
+                        principalColumn: "VariantId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryTextMapping",
+                name: "GroupTextMapping",
                 columns: table => new
                 {
                     MappingId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     TextEntryTextId = table.Column<int>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: true),
+                    GroupId = table.Column<int>(nullable: true),
                     SurveyId = table.Column<int>(nullable: true),
+                    SurveyUserEmail = table.Column<string>(nullable: true),
+                    SurveyVariantId = table.Column<int>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryTextMapping", x => x.MappingId);
+                    table.PrimaryKey("PK_GroupTextMapping", x => x.MappingId);
                     table.ForeignKey(
-                        name: "FK_CategoryTextMapping_Category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Category",
-                        principalColumn: "CategoryId",
+                        name: "FK_GroupTextMapping_Group_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Group",
+                        principalColumn: "GroupId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CategoryTextMapping_Survey_SurveyId",
-                        column: x => x.SurveyId,
-                        principalTable: "Survey",
-                        principalColumn: "SurveyId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CategoryTextMapping_TextEntry_TextEntryTextId",
+                        name: "FK_GroupTextMapping_TextEntry_TextEntryTextId",
                         column: x => x.TextEntryTextId,
                         principalTable: "TextEntry",
                         principalColumn: "TextId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_GroupTextMapping_Survey_SurveyId_SurveyUserEmail_SurveyVaria~",
+                        columns: x => new { x.SurveyId, x.SurveyUserEmail, x.SurveyVariantId },
+                        principalTable: "Survey",
+                        principalColumns: new[] { "SurveyId", "UserEmail", "VariantId" },
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
-                table: "Category",
-                column: "CategoryId",
+                table: "Group",
+                column: "GroupId",
                 values: new object[]
                 {
                     1,
@@ -992,24 +1000,35 @@ namespace SurveyApp.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryTextMapping_CategoryId",
-                table: "CategoryTextMapping",
-                column: "CategoryId");
+                name: "IX_GroupTextMapping_GroupId",
+                table: "GroupTextMapping",
+                column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryTextMapping_SurveyId",
-                table: "CategoryTextMapping",
-                column: "SurveyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoryTextMapping_TextEntryTextId",
-                table: "CategoryTextMapping",
+                name: "IX_GroupTextMapping_TextEntryTextId",
+                table: "GroupTextMapping",
                 column: "TextEntryTextId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupTextMapping_SurveyId_SurveyUserEmail_SurveyVariantId",
+                table: "GroupTextMapping",
+                columns: new[] { "SurveyId", "SurveyUserEmail", "SurveyVariantId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Survey_UserEmail",
                 table: "Survey",
                 column: "UserEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Survey_VariantId",
+                table: "Survey",
+                column: "VariantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Survey_SurveyId_UserEmail_VariantId",
+                table: "Survey",
+                columns: new[] { "SurveyId", "UserEmail", "VariantId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
@@ -1060,22 +1079,22 @@ namespace SurveyApp.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryTextMapping");
+                name: "GroupTextMapping");
 
             migrationBuilder.DropTable(
-                name: "Variant");
-
-            migrationBuilder.DropTable(
-                name: "Category");
+                name: "Group");
 
             migrationBuilder.DropTable(
                 name: "Survey");
 
             migrationBuilder.DropTable(
-                name: "TextEntry");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Variant");
+
+            migrationBuilder.DropTable(
+                name: "TextEntry");
         }
     }
 }

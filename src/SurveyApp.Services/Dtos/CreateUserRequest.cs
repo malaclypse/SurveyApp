@@ -1,7 +1,10 @@
-﻿namespace SurveyApp.Services.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SurveyApp.Services.Dtos
 {
     public class CreateUserRequest
     {
+        [Required]
         public string Email { get; set; }
 
         public string EnglishLevel { get; set; }

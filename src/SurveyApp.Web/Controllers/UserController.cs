@@ -1,5 +1,6 @@
 ﻿namespace SurveyApp.Web.Controllers
 {
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using SurveyApp.Services.Abstract;
     using SurveyApp.Services.Dtos;
@@ -18,31 +19,48 @@
         }
 
         [HttpPost]
-        public async Task<User> Post([FromBody] CreateUserRequest userRequest)
+
+        public async Task<ActionResult<User>> Post([FromBody] CreateUserRequest userRequest)
         {
-            User response = null;
-            if (userRequest != null)
+            var user = _userService.GetAsync(userRequest.Email);
+            if (user != null)
             {
-                response = await _userService.InsertAsync(userRequest);
+                return new RedirectResult($"api/user/Get/{userRequest.Email}/");
             }
-            return response;
+
+            var userResponse = await _userService.InsertAsync(userRequest);
+
+            return new ObjectResult(user) { StatusCode = 200 };
         }
 
         [HttpPut("{email}/")]
-        public async Task<User> Put([FromRoute] string email, [FromBody] UpdateUserRequest userRequest)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<User>> Put([FromRoute] string email, [FromBody] UpdateUserRequest userRequest)
         {
-            User response = null;
-            if (userRequest != null)
+            var user = await _userService.GetAsync(email);
+            if (user == null)
             {
-                response = await _userService.UpdateAsync(email, userRequest);
+                return NotFound(user);
             }
-            return response;
+
+            user = await _userService.UpdateAsync(email, userRequest);
+
+            return new ObjectResult(user) { StatusCode = 200 };
         }
 
         [HttpGet("{email}/")]
-        public async Task<User> Get([FromRoute] string email)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<User>> Get([FromRoute] string email)
         {
-            return await _userService.GetAsync(email);
+            var user = await _userService.GetAsync(email);
+            if (user == null)
+            {
+                return NotFound(user);
+            }
+
+            return new ObjectResult(user) { StatusCode = 200 };
         }
     }
 }

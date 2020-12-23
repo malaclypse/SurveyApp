@@ -17,50 +17,50 @@ namespace SurveyApp.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("SurveyApp.Data.Models.CategoryEntity", b =>
+            modelBuilder.Entity("SurveyApp.Data.Models.GroupEntity", b =>
                 {
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("GroupId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.HasKey("CategoryId");
+                    b.HasKey("GroupId");
 
-                    b.ToTable("Category");
+                    b.ToTable("Group");
 
                     b.HasData(
                         new
                         {
-                            CategoryId = 1
+                            GroupId = 1
                         },
                         new
                         {
-                            CategoryId = 2
+                            GroupId = 2
                         },
                         new
                         {
-                            CategoryId = 3
+                            GroupId = 3
                         },
                         new
                         {
-                            CategoryId = 4
+                            GroupId = 4
                         },
                         new
                         {
-                            CategoryId = 5
+                            GroupId = 5
                         });
                 });
 
-            modelBuilder.Entity("SurveyApp.Data.Models.CategoryTextMappingEntity", b =>
+            modelBuilder.Entity("SurveyApp.Data.Models.GroupTextMappingEntity", b =>
                 {
                     b.Property<int>("MappingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
+
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -71,24 +71,37 @@ namespace SurveyApp.Data.Migrations
                     b.Property<int?>("SurveyId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SurveyUserEmail")
+                        .HasColumnType("varchar(254)");
+
+                    b.Property<int?>("SurveyVariantId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TextEntryTextId")
                         .HasColumnType("int");
 
                     b.HasKey("MappingId");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("SurveyId");
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("TextEntryTextId");
 
-                    b.ToTable("CategoryTextMapping");
+                    b.HasIndex("SurveyId", "SurveyUserEmail", "SurveyVariantId");
+
+                    b.ToTable("GroupTextMapping");
                 });
 
             modelBuilder.Entity("SurveyApp.Data.Models.SurveyEntity", b =>
                 {
                     b.Property<int>("SurveyId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("varchar(254)");
+
+                    b.Property<int>("VariantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -106,15 +119,14 @@ namespace SurveyApp.Data.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("varchar(767)");
-
-                    b.Property<int>("VariantId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SurveyId");
+                    b.HasKey("SurveyId", "UserEmail", "VariantId");
 
                     b.HasIndex("UserEmail");
+
+                    b.HasIndex("VariantId");
+
+                    b.HasIndex("SurveyId", "UserEmail", "VariantId")
+                        .IsUnique();
 
                     b.ToTable("Survey");
                 });
@@ -560,7 +572,8 @@ namespace SurveyApp.Data.Migrations
             modelBuilder.Entity("SurveyApp.Data.Models.UserEntity", b =>
                 {
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(767)");
+                        .HasColumnType("varchar(254)")
+                        .HasMaxLength(254);
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
@@ -588,7 +601,8 @@ namespace SurveyApp.Data.Migrations
                 {
                     b.Property<int>("VariantId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasMaxLength(100);
 
                     b.Property<int>("Text1Id")
                         .HasColumnType("int");
@@ -6336,26 +6350,34 @@ namespace SurveyApp.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SurveyApp.Data.Models.CategoryTextMappingEntity", b =>
+            modelBuilder.Entity("SurveyApp.Data.Models.GroupTextMappingEntity", b =>
                 {
-                    b.HasOne("SurveyApp.Data.Models.CategoryEntity", "Category")
+                    b.HasOne("SurveyApp.Data.Models.GroupEntity", "Group")
                         .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("SurveyApp.Data.Models.SurveyEntity", "Survey")
-                        .WithMany("Mappings")
-                        .HasForeignKey("SurveyId");
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("SurveyApp.Data.Models.TextEntryEntity", "TextEntry")
                         .WithMany()
                         .HasForeignKey("TextEntryTextId");
+
+                    b.HasOne("SurveyApp.Data.Models.SurveyEntity", "Survey")
+                        .WithMany("Mappings")
+                        .HasForeignKey("SurveyId", "SurveyUserEmail", "SurveyVariantId");
                 });
 
             modelBuilder.Entity("SurveyApp.Data.Models.SurveyEntity", b =>
                 {
                     b.HasOne("SurveyApp.Data.Models.UserEntity", "User")
                         .WithMany("Surveys")
-                        .HasForeignKey("UserEmail");
+                        .HasForeignKey("UserEmail")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SurveyApp.Data.Models.VariantEntity", "Variant")
+                        .WithMany()
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SurveyApp.Data.Models.VariantEntity", b =>
