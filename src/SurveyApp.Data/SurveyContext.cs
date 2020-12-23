@@ -14,9 +14,9 @@
 
         public DbSet<SurveyEntity> Survey { get; set; }
 
-        public DbSet<CategoryEntity> Category { get; set; }
+        public DbSet<GroupEntity> Group { get; set; }
         
-        public DbSet<CategoryTextMappingEntity> CategoryTextMapping { get; set; }
+        public DbSet<GroupTextMappingEntity> GroupTextMapping { get; set; }
         
         public DbSet<TextEntryEntity> TextEntry { get; set; }
 
@@ -34,7 +34,7 @@
             modelBuilder.Entity<UserEntity>(entity =>
             {
                 entity.HasKey(e => e.Email);
-                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(254);
                 entity.HasIndex(e => e.Email);
                 entity.HasMany(e => e.Surveys);
                 entity.Property(e => e.EnglishLevel);
@@ -46,8 +46,9 @@
 
             modelBuilder.Entity<SurveyEntity>(entity =>
             {
-                entity.HasKey(e => e.SurveyId);
-                entity.Property(e => e.SurveyId).IsRequired();
+                entity.HasKey(e => new { e.SurveyId, e.UserEmail, e.VariantId });
+                entity.HasIndex(e => new { e.SurveyId, e.UserEmail, e.VariantId }).IsUnique();
+                entity.Property(e => e.SurveyId).IsRequired().ValueGeneratedOnAdd().HasMaxLength(100);
                 entity.Property(e => e.IsCompleted);
                 entity.Property(e => e.IsDeleted);
                 entity.Property(e => e.CreatedDate);
@@ -55,25 +56,26 @@
                 entity.Property(e => e.FinishedOnDate);
                 entity.HasOne(e => e.User)
                       .WithMany(u => u.Surveys);
+                entity.HasOne(e => e.Variant);
             });
 
             modelBuilder.Entity<TextEntryEntity>(entity =>
             {
                 entity.HasKey(e => e.TextId);
-                entity.Property(e => e.TextId).IsRequired();
+                entity.Property(e => e.TextId).IsRequired().ValueGeneratedOnAdd();
                 entity.Property(e => e.Text).IsRequired();
             });
 
-            modelBuilder.Entity<CategoryEntity>(entity =>
+            modelBuilder.Entity<GroupEntity>(entity =>
             {
-                entity.HasKey(e => e.CategoryId);
-                entity.Property(e => e.CategoryId).IsRequired();
+                entity.HasKey(e => e.GroupId);
+                entity.Property(e => e.GroupId).IsRequired().ValueGeneratedOnAdd();
             });
 
             modelBuilder.Entity<VariantEntity>(entity =>
             {
                 entity.HasKey(e => e.VariantId);
-                entity.Property(e => e.VariantId).IsRequired();
+                entity.Property(e => e.VariantId).IsRequired().ValueGeneratedOnAdd().HasMaxLength(100);
                 entity.Property(e => e.TotalCount).HasDefaultValue(0);
                 entity.Property(e => e.Text1Id).IsRequired();
                 entity.Property(e => e.Text2Id).IsRequired();
@@ -85,9 +87,10 @@
                 entity.Property(e => e.Text8Id).IsRequired();
             });
 
-            modelBuilder.Entity<CategoryTextMappingEntity>(entity => 
+            modelBuilder.Entity<GroupTextMappingEntity>(entity => 
             {
                 entity.HasKey(e => e.MappingId);
+                entity.Property(e => e.MappingId).IsRequired().ValueGeneratedOnAdd();
                 entity.HasOne(e => e.Survey).WithMany(m => m.Mappings);
             });
             
@@ -95,7 +98,7 @@
             modelBuilder.SeedTexts();
 
             // This inserts all 5 categories.
-            modelBuilder.SeedCategories();
+            modelBuilder.SeedGroups();
 
             // This inserts all 400 variants into the db
             modelBuilder.SeedVariants();

@@ -433,25 +433,25 @@ public static class ModelBuilderExtensions
         );
     }
 
-    public static void SeedCategories(this ModelBuilder modelBuilder)
+    public static void SeedGroups(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CategoryEntity>().HasData(
-           new CategoryEntity
+        modelBuilder.Entity<GroupEntity>().HasData(
+           new GroupEntity
            {
-               CategoryId = 1,
+               GroupId = 1,
            },
-            new CategoryEntity
+            new GroupEntity
             {
-                CategoryId = 2,
-            }, new CategoryEntity
+                GroupId = 2,
+            }, new GroupEntity
             {
-                CategoryId = 3,
-            }, new CategoryEntity
+                GroupId = 3,
+            }, new GroupEntity
             {
-                CategoryId = 4,
-            }, new CategoryEntity
+                GroupId = 4,
+            }, new GroupEntity
             {
-                CategoryId = 5,
+                GroupId = 5,
             });
     }
 
