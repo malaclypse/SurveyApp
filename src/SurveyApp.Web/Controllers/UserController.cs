@@ -1,34 +1,66 @@
 ﻿namespace SurveyApp.Web.Controllers
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
-    using SurveyApp.Data.Models;
-    using SurveyApp.Web.Dtos;
+    using SurveyApp.Services.Abstract;
+    using SurveyApp.Services.Dtos;
+    using System.Threading.Tasks;
 
-    [Route("api/[controller]")]
+    [Route("api/user")]
+    [Produces("application/json")]
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserService _userService;
 
-        private static readonly List<User> Users = new List<User>();
-
-        private readonly ILogger<UserController> _logger;
-
-        public UserController(ILogger<UserController> logger)
+        public UserController(IUserService userService)
         {
-            _logger = logger;
+            _userService = userService;
         }
 
-        // POST: api/user
         [HttpPost]
-        public async Task<ActionResult<UserEntity>> PostTodoItem(User user)
-        {
-            Users.Add(user);
 
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-            return CreatedAtAction(nameof(User), new { email = user.Email }, user);
+        public async Task<ActionResult<User>> Post([FromBody] CreateUserRequest userRequest)
+        {
+            var user = _userService.GetAsync(userRequest.Email);
+            if (user != null)
+            {
+                return new RedirectResult($"api/user/Get/{userRequest.Email}/");
+            }
+
+            var userResponse = await _userService.InsertAsync(userRequest);
+
+            return new ObjectResult(user) { StatusCode = 200 };
+        }
+
+        [HttpPut("{email}/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<User>> Put([FromRoute] string email, [FromBody] UpdateUserRequest userRequest)
+        {
+            var user = await _userService.GetAsync(email);
+            if (user == null)
+            {
+                return NotFound(user);
+            }
+
+            user = await _userService.UpdateAsync(email, userRequest);
+
+            return new ObjectResult(user) { StatusCode = 200 };
+        }
+
+        [HttpGet("{email}/")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<User>> Get([FromRoute] string email)
+        {
+            var user = await _userService.GetAsync(email);
+            if (user == null)
+            {
+                return NotFound(user);
+            }
+
+            return new ObjectResult(user) { StatusCode = 200 };
         }
     }
 }

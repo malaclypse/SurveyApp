@@ -4,13 +4,15 @@ using System.Text;
 
 namespace SurveyApp.Data.Models
 {
-    public class CategoryTextMappingEntity
+    public class GroupTextMappingEntity
     {
         public int MappingId { get; set; }
         
         public TextEntryEntity TextEntry { get; set; }
         
-        public CategoryEntity Category { get; set; }
+        public GroupEntity Group { get; set; }
+
+        public SurveyEntity Survey { get; set; }
         
         public bool IsDeleted { get; set; }
         
