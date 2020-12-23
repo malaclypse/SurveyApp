@@ -7,15 +7,15 @@
     {
         public string Email { get; set; }
         
-        public EnglishLevel EnglishLevel { get; set; }
+        public EnglishLevel? EnglishLevel { get; set; }
 
         public string NativeLanguage { get; set; }
+
+        public Gender? Gender { get; set; }
 
         public DateTime CreatedDate { get; set; }
         
         public DateTime LastModifiedDate { get; set; }
-
-        public Gender Gender { get; set; }
 
         public List<SurveyEntity> Surveys { get; set; }
     }

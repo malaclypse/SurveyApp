@@ -38,11 +38,11 @@ namespace SurveyApp.Data.Migrations
                 columns: table => new
                 {
                     Email = table.Column<string>(maxLength: 254, nullable: false),
-                    EnglishLevel = table.Column<int>(nullable: false),
+                    EnglishLevel = table.Column<int>(nullable: true),
                     NativeLanguage = table.Column<string>(nullable: true),
+                    Gender = table.Column<int>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false),
-                    Gender = table.Column<int>(nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

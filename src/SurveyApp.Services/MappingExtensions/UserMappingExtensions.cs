@@ -11,8 +11,8 @@
             return new UserEntity()
             {
                 Email = user.Email,
-                EnglishLevel = Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
-                Gender = Enum.Parse<Gender>(user.Gender, true),
+                EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
+                Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
                 NativeLanguage = user.NativeLanguage
             };
         }
@@ -22,16 +22,16 @@
             return new UserEntity()
             {
                 Email = email,
-                EnglishLevel = Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
-                Gender = Enum.Parse<Gender>(user.Gender, true),
+                EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
+                Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
                 NativeLanguage = user.NativeLanguage
             };
         }
 
         public static UserEntity UpdateUserEntity(this UserEntity userEntity, UpdateUserRequest user)
         {
-            userEntity.EnglishLevel = Enum.Parse<EnglishLevel>(user.EnglishLevel, true);
-            userEntity.Gender = Enum.Parse<Gender>(user.Gender, true);
+            userEntity.EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true);
+            userEntity.Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true);
             userEntity.NativeLanguage = user.NativeLanguage;
             
             return userEntity;
@@ -42,8 +42,8 @@
             return new User()
             {
                 Email = userEntity.Email,
-                EnglishLevel = userEntity.EnglishLevel.ToString(),
-                Gender = userEntity.Gender.ToString(),
+                EnglishLevel = userEntity.EnglishLevel?.ToString(),
+                Gender = userEntity.Gender?.ToString(),
                 NativeLanguage = userEntity.NativeLanguage
             };
         }

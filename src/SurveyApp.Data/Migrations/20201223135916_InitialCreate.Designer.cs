@@ -9,7 +9,7 @@ using SurveyApp.Data;
 namespace SurveyApp.Data.Migrations
 {
     [DbContext(typeof(SurveyContext))]
-    [Migration("20201223101811_InitialCreate")]
+    [Migration("20201223135916_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -580,10 +580,10 @@ namespace SurveyApp.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("EnglishLevel")
+                    b.Property<int?>("EnglishLevel")
                         .HasColumnType("int");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LastModifiedDate")
