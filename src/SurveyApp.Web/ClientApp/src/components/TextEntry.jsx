@@ -1,6 +1,5 @@
 ﻿import React, { Component } from "react";
 import { Toast, ToastBody, Col, Modal, ModalBody } from "reactstrap";
-import { useDrag, useDrop } from "react-dnd";
 
 export class TextEntry extends Component {
   static displayName = TextEntry.name;
@@ -19,7 +18,7 @@ export class TextEntry extends Component {
   };
 
   render() {
-    const extraContent = this.props.text.text;
+    const extraContent = this.props.text;
 
     const content =
       extraContent.length > 40
@@ -28,7 +27,7 @@ export class TextEntry extends Component {
     return (
       <React.Fragment>
         <Col>
-          <Toast id={this.props.text.textId} onClick={this.toggle}>
+          <Toast id={this.props.textId} onClick={this.toggle}>
             <ToastBody>{content}</ToastBody>
           </Toast>
           <Modal isOpen={this.state.modal} toggle={this.toggle}>

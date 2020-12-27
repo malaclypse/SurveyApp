@@ -1,18 +1,10 @@
 ﻿import React, { Component } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Col
-} from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
 import axios from "axios";
 import { Redirect } from "react-router";
+import { LanguageDropdown } from "./LanguageDropdown";
+import { EnglishDropdown } from "./EnglishDropdown";
+import { GenderRadio } from "./GenderRadio";
 
 export class RegistrationForm extends Component {
   static displayName = RegistrationForm.name;
@@ -26,28 +18,9 @@ export class RegistrationForm extends Component {
       gender: null,
       nativeLanguage: null,
       englishLevel: null,
-      dropdownOpen: false,
       value: "Home",
-      redirect: false,
-      dropDownValue: null,
-      dropDownText: "English level(self- assessed)"
+      redirect: false
     };
-
-    this.toggle = this.toggle.bind(this);
-    this.select = this.select.bind(this);
-  }
-
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    });
-  }
-
-  select(event) {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen,
-      value: event.target.innerText
-    });
   }
 
   submitForm(e) {
@@ -61,12 +34,31 @@ export class RegistrationForm extends Component {
     console.log(request);
 
     axios({
-      method: "post",
+      method: "POST",
       url: "/api/user",
-      data: {
-        request
-      }
-    }).then(() => this.setState({ redirect: true }));
+      data: request
+    }).then(response => this.handleRedirect(response));
+  }
+
+  addEnglishLevel(value) {
+    this.setState({ englishLevel: value });
+  }
+
+  addNativeLanguage(value) {
+    this.setState({ nativeLanguage: value });
+  }
+
+  addGender(value) {
+    this.setState({ gender: value });
+  }
+
+  handleRedirect(response) {
+    this.setState({ redirect: true });
+    console.log(response.data);
+    console.log(response.status);
+    console.log(response.statusText);
+    console.log(response.headers);
+    console.log(response.config);
   }
 
   render() {
@@ -80,7 +72,7 @@ export class RegistrationForm extends Component {
         <Form className="registration" onSubmit={e => this.submitForm(e)}>
           <Col md={4}>
             <FormGroup>
-              <Label for="email">Email</Label>
+              <Label for="email">Email*</Label>
               <Input
                 type="email"
                 name="email"
@@ -91,140 +83,27 @@ export class RegistrationForm extends Component {
             </FormGroup>
           </Col>
           <Col md={4}>
-            <Label for="gender">gender</Label>
-            <FormGroup id="gender" check>
-              <Label check>
-                <Input
-                  type="radio"
-                  name="gender"
-                  id="male"
-                  onChange={event => this.setState({ gender: event.target.id })}
-                />{" "}
-                Male
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="radio"
-                  name="gender"
-                  id="female"
-                  onChange={event => this.setState({ gender: event.target.id })}
-                />{" "}
-                Female
-              </Label>
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="radio"
-                  name="gender"
-                  id="notSpecified"
-                  onChange={event => this.setState({ gender: event.target.id })}
-                />{" "}
-                Prefer not to say
-              </Label>
-            </FormGroup>
+            <GenderRadio
+              name="gender"
+              id="gender"
+              onChange={this.addGender.bind(this)}
+            />
           </Col>
-
-          <br />
           <Col md={4}>
-            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-              <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem header>
-                  English level (self-assessed)
-                </DropdownItem>
-                <DropdownItem
-                  id="level0"
-                  onClick={event =>
-                    this.setState({
-                      dropDownValue: event.currentTarget.id,
-                      englishLevel: event.currentTarget.id,
-                      dropDownText: event.currentTarget.textContent
-                    })
-                  }
-                >
-                  0 - No Proficiency
-                </DropdownItem>
-                <DropdownItem
-                  id="level1"
-                  onClick={event =>
-                    this.setState({
-                      dropDownValue: event.currentTarget.id,
-                      englishLevel: event.currentTarget.id,
-                      dropDownText: event.currentTarget.textContent
-                    })
-                  }
-                >
-                  1 - Elementary Proficiency
-                </DropdownItem>
-                <DropdownItem
-                  id="level2"
-                  onClick={event =>
-                    this.setState({
-                      dropDownText: event.currentTarget.textContent,
-                      englishLevel: event.currentTarget.id,
-                      dropDownValue: event.currentTarget.id
-                    })
-                  }
-                >
-                  2 - Limited Working Proficiency
-                </DropdownItem>
-                <DropdownItem
-                  id="level3"
-                  onClick={event =>
-                    this.setState({
-                      dropDownText: event.currentTarget.textContent,
-                      englishLevel: event.currentTarget.id,
-                      dropDownValue: event.currentTarget.id
-                    })
-                  }
-                >
-                  3 - Professional Proficiency
-                </DropdownItem>
-                <DropdownItem
-                  id="level4"
-                  onClick={event =>
-                    this.setState({
-                      dropDownText: event.currentTarget.textContent,
-                      englishLevel: event.currentTarget.id,
-                      dropDownValue: event.currentTarget.id
-                    })
-                  }
-                >
-                  4 - Full Professional Proficiency
-                </DropdownItem>
-                <DropdownItem
-                  id="level5"
-                  onClick={event =>
-                    this.setState({
-                      dropDownText: event.currentTarget.textContent,
-                      englishLevel: event.currentTarget.id,
-                      dropDownValue: event.currentTarget.id
-                    })
-                  }
-                >
-                  5 - Native / Bilingual Proficiency
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            <EnglishDropdown
+              name="englishLevel"
+              id="englishLevel"
+              placeholder="English level(self-assessed)"
+              onChange={this.addEnglishLevel.bind(this)}
+            />
           </Col>
-
-          <br />
           <Col md={4}>
-            <FormGroup>
-              <Label for="nativeLanguage">Native Language</Label>
-              <Input
-                type="text"
-                name="nativeLanguage"
-                id="nativeLanguage"
-                placeholder="Native Language"
-                onChange={event =>
-                  this.setState({ nativeLanguage: event.target.value })
-                }
-              />
-            </FormGroup>
+            <LanguageDropdown
+              name="nativeLanguage"
+              id="nativeLanguage"
+              placeholder="Native Language"
+              onChange={this.addNativeLanguage.bind(this)}
+            />
           </Col>
           <Col md={4}>
             <Button>Register</Button>

@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { ListGroup, ListGroupItem, Col } from "reactstrap";
-export class Category extends Component {
+export class Group extends Component {
   render() {
     return (
       <React.Fragment>
