@@ -2,7 +2,7 @@
 import styled from "@emotion/styled";
 import { colors } from "@atlaskit/theme";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import QuoteItem from "./quote-item";
+import TextItem from "./text-item";
 import { grid } from "../constants";
 import Title from "./title";
 
@@ -23,15 +23,29 @@ const Wrapper = styled.div`
   flex-direction: column;
   opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : "inherit")};
   padding: ${grid}px;
-  border: ${grid}px;
   padding-bottom: 0;
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
-  width: 250px;
+  width: 200px;
+  border: 2px ${colors.N10};
+  border-style: inset;
+  border-radius: 5px;
+`;
+const maxHeightInitialArea = 120;
+
+const InitialAreaWrapper = styled.div`
+  background-color: ${props =>
+    getBackgroundColor(props.isDraggingOver, props.isDraggingFrom)};
+  opacity: ${({ isDropDisabled }) => (isDropDisabled ? 0.5 : "inherit")};
+  padding: ${grid}px;
+  border: ${grid}px;
+  max-height: ${maxHeightInitialArea}px;
+  padding-bottom: 0;
+  transition: background-color 0.1s ease, opacity 0.1s ease;
+  background-color: transparent;
 `;
 
-const scrollContainerHeight = 250;
-
+const scrollContainerHeight = 180;
 const DropZone = styled.div`
   /* stop the list collapsing when empty */
   min-height: ${scrollContainerHeight}px;
@@ -49,10 +63,16 @@ const ScrollContainer = styled.div`
 `;
 
 /* stylelint-disable block-no-empty */
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex,
+  flexDirection: row,
+  padding: 0,
+  width: auto;
+  max-height: auto;
+`;
 /* stylelint-enable */
 
-class InnerQuoteList extends React.Component {
+class InnerTextList extends React.Component {
   shouldComponentUpdate(nextProps) {
     if (nextProps.texts !== this.props.texts) {
       return true;
@@ -70,7 +90,7 @@ class InnerQuoteList extends React.Component {
         shouldRespectForceTouch={false}
       >
         {(dragProvided, dragSnapshot) => (
-          <QuoteItem
+          <TextItem
             key={text.id}
             text={text}
             isDragging={dragSnapshot.isDragging}
@@ -93,7 +113,7 @@ class InnerList extends React.Component {
       <Container>
         {title}
         <DropZone ref={dropProvided.innerRef}>
-          <InnerQuoteList texts={texts} />
+          <InnerTextList texts={texts} />
           {dropProvided.placeholder}
         </DropZone>
       </Container>
@@ -101,7 +121,7 @@ class InnerList extends React.Component {
   }
 }
 
-export default class QuoteList extends React.Component {
+export default class TextList extends React.Component {
   static defaultProps = {
     listId: "LIST"
   };
@@ -127,31 +147,61 @@ export default class QuoteList extends React.Component {
         isDropDisabled={isDropDisabled}
         isCombineEnabled={isCombineEnabled}
       >
-        {(dropProvided, dropSnapshot) => (
-          <Wrapper
-            style={style}
-            isDraggingOver={dropSnapshot.isDraggingOver}
-            isDropDisabled={isDropDisabled}
-            isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
-            {...dropProvided.droppableProps}
-          >
-            {internalScroll ? (
-              <ScrollContainer style={scrollContainerStyle}>
+        {(dropProvided, dropSnapshot) =>
+          this.props.isInitialArea ? (
+            <InitialAreaWrapper
+              style={style}
+              isDraggingOver={dropSnapshot.isDraggingOver}
+              isDropDisabled={isDropDisabled}
+              isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+              {...dropProvided.droppableProps}
+            >
+              {internalScroll ? (
+                <ScrollContainer style={scrollContainerStyle}>
+                  <InnerList
+                    texts={texts}
+                    title={title}
+                    dropProvided={dropProvided}
+                    isInitialArea={this.props.isInitialArea}
+                  />
+                </ScrollContainer>
+              ) : (
                 <InnerList
                   texts={texts}
                   title={title}
                   dropProvided={dropProvided}
+                  isInitialArea={this.props.isInitialArea}
                 />
-              </ScrollContainer>
-            ) : (
-              <InnerList
-                texts={texts}
-                title={title}
-                dropProvided={dropProvided}
-              />
-            )}
-          </Wrapper>
-        )}
+              )}
+            </InitialAreaWrapper>
+          ) : (
+            <Wrapper
+              style={style}
+              isDraggingOver={dropSnapshot.isDraggingOver}
+              isDropDisabled={isDropDisabled}
+              isDraggingFrom={Boolean(dropSnapshot.draggingFromThisWith)}
+              {...dropProvided.droppableProps}
+            >
+              {internalScroll ? (
+                <ScrollContainer style={scrollContainerStyle}>
+                  <InnerList
+                    texts={texts}
+                    title={title}
+                    dropProvided={dropProvided}
+                    isInitialArea={this.props.isInitialArea}
+                  />
+                </ScrollContainer>
+              ) : (
+                <InnerList
+                  texts={texts}
+                  title={title}
+                  dropProvided={dropProvided}
+                  isInitialArea={this.props.isInitialArea}
+                />
+              )}
+            </Wrapper>
+          )
+        }
       </Droppable>
     );
   }

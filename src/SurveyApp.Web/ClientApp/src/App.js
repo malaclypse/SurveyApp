@@ -5,6 +5,7 @@ import { Home } from "./components/Home";
 import { LoginForm } from "./components/LoginForm";
 import { RegistrationForm } from "./components/RegistrationForm";
 import { Survey } from "./components/Survey";
+import { SurveyCompletedPage } from "./components/SurveyCompletedPage";
 import "./custom.css";
 
 export default class App extends Component {
@@ -17,6 +18,7 @@ export default class App extends Component {
         <Route path="/login" component={LoginForm} />
         <Route path="/register" component={RegistrationForm} />
         <Route path="/survey" component={Survey} />
+        <Route path="/surveycompleted" component={SurveyCompletedPage} />
       </Layout>
     );
   }
