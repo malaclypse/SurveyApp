@@ -46,9 +46,10 @@
 
             modelBuilder.Entity<SurveyEntity>(entity =>
             {
-                entity.HasKey(e => new { e.SurveyId, e.UserEmail, e.VariantId });
-                entity.HasIndex(e => new { e.SurveyId, e.UserEmail, e.VariantId }).IsUnique();
-                entity.Property(e => e.SurveyId).IsRequired().ValueGeneratedOnAdd().HasMaxLength(100);
+                entity.HasKey(e => new { e.SurveyId });
+                entity.HasIndex(e => new { e.UserEmail, e.VariantId }).IsUnique();
+                entity.Property(e => e.SurveyId).IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.UserEmail).IsRequired();
                 entity.Property(e => e.IsCompleted);
                 entity.Property(e => e.IsDeleted);
                 entity.Property(e => e.CreatedDate);
@@ -92,6 +93,8 @@
                 entity.HasKey(e => e.MappingId);
                 entity.Property(e => e.MappingId).IsRequired().ValueGeneratedOnAdd();
                 entity.HasOne(e => e.Survey).WithMany(m => m.Mappings);
+                entity.HasOne(e => e.TextEntry);
+                entity.HasOne(e => e.Group);
             });
             
             // This inserts all 20 texts into the db initially if they don't already exist.
