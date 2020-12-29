@@ -122,7 +122,7 @@ namespace SurveyApp.Data.Migrations
                 name: "Survey",
                 columns: table => new
                 {
-                    SurveyId = table.Column<int>(maxLength: 100, nullable: false)
+                    SurveyId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     VariantId = table.Column<int>(nullable: false),
                     UserEmail = table.Column<string>(nullable: false),
@@ -134,7 +134,7 @@ namespace SurveyApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Survey", x => new { x.SurveyId, x.UserEmail, x.VariantId });
+                    table.PrimaryKey("PK_Survey", x => x.SurveyId);
                     table.ForeignKey(
                         name: "FK_Survey_User_UserEmail",
                         column: x => x.UserEmail,
@@ -158,8 +158,6 @@ namespace SurveyApp.Data.Migrations
                     TextEntryTextId = table.Column<int>(nullable: true),
                     GroupId = table.Column<int>(nullable: true),
                     SurveyId = table.Column<int>(nullable: true),
-                    SurveyUserEmail = table.Column<string>(nullable: true),
-                    SurveyVariantId = table.Column<int>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false)
@@ -174,16 +172,16 @@ namespace SurveyApp.Data.Migrations
                         principalColumn: "GroupId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_GroupTextMapping_Survey_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Survey",
+                        principalColumn: "SurveyId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_GroupTextMapping_TextEntry_TextEntryTextId",
                         column: x => x.TextEntryTextId,
                         principalTable: "TextEntry",
                         principalColumn: "TextId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GroupTextMapping_Survey_SurveyId_SurveyUserEmail_SurveyVaria~",
-                        columns: x => new { x.SurveyId, x.SurveyUserEmail, x.SurveyVariantId },
-                        principalTable: "Survey",
-                        principalColumns: new[] { "SurveyId", "UserEmail", "VariantId" },
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1005,19 +1003,14 @@ namespace SurveyApp.Data.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupTextMapping_SurveyId",
+                table: "GroupTextMapping",
+                column: "SurveyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GroupTextMapping_TextEntryTextId",
                 table: "GroupTextMapping",
                 column: "TextEntryTextId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupTextMapping_SurveyId_SurveyUserEmail_SurveyVariantId",
-                table: "GroupTextMapping",
-                columns: new[] { "SurveyId", "SurveyUserEmail", "SurveyVariantId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Survey_UserEmail",
-                table: "Survey",
-                column: "UserEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Survey_VariantId",
@@ -1025,9 +1018,9 @@ namespace SurveyApp.Data.Migrations
                 column: "VariantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Survey_SurveyId_UserEmail_VariantId",
+                name: "IX_Survey_UserEmail_VariantId",
                 table: "Survey",
-                columns: new[] { "SurveyId", "UserEmail", "VariantId" },
+                columns: new[] { "UserEmail", "VariantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
