@@ -27,8 +27,8 @@ const Wrapper = styled.div`
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
   width: 200px;
-  border: 2px ${colors.N10};
-  border-style: inset;
+  border: 2px solid ${colors.N50};
+
   border-radius: 5px;
 `;
 const maxHeightInitialArea = 120;
@@ -41,8 +41,8 @@ const InitialAreaWrapper = styled.div`
   border: ${grid}px;
   max-height: ${maxHeightInitialArea}px;
   padding-bottom: 0;
-  transition: background-color 0.1s ease, opacity 0.1s ease;
   background-color: transparent;
+  min-width: 800px;
 `;
 
 const scrollContainerHeight = 180;
@@ -82,25 +82,29 @@ class InnerTextList extends React.Component {
   }
 
   render() {
-    return this.props.texts.map((text, index) => (
-      <Draggable
-        key={text.id}
-        draggableId={`${text.id}`}
-        index={index}
-        shouldRespectForceTouch={false}
-      >
-        {(dragProvided, dragSnapshot) => (
-          <TextItem
-            key={text.id}
-            text={text}
-            isDragging={dragSnapshot.isDragging}
-            isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
-            provided={dragProvided}
-            canDragInteractiveElements
-          />
-        )}
-      </Draggable>
-    ));
+    const { texts } = this.props;
+    if (texts !== undefined) {
+      return this.props.texts.map((text, index) => (
+        <Draggable
+          key={text.id}
+          draggableId={`${text.id}`}
+          index={index}
+          shouldRespectForceTouch={false}
+        >
+          {(dragProvided, dragSnapshot) => (
+            <TextItem
+              key={text.id}
+              text={text}
+              isDragging={dragSnapshot.isDragging}
+              isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
+              provided={dragProvided}
+              canDragInteractiveElements
+            />
+          )}
+        </Draggable>
+      ));
+    }
+    return null;
   }
 }
 

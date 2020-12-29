@@ -92,12 +92,7 @@ export default class TextItem extends React.PureComponent {
   render() {
     const { text, isDragging, isGroupedOver, provided } = this.props;
 
-    const content = this.props.text.text;
-
-    //const content =
-    //  extraContent.length > 40
-    //    ? extraContent.substring(0, 37) + "..."
-    //    : extraContent;
+    const content = text.text;
 
     return (
       <Container

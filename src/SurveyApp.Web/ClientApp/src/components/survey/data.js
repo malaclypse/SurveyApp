@@ -1,6 +1,4 @@
-﻿import { colors } from "@atlaskit/theme";
-
-const group0 = {
+﻿const group0 = {
   id: 0
 };
 const group1 = {
@@ -71,13 +69,3 @@ export const texts = [
     group: group0
   }
 ];
-
-const getByGroup = (group, items) => items.filter(text => text.group === group);
-
-export const groupTextMap = groups.reduce(
-  (previous, group) => ({
-    ...previous,
-    [group.id]: getByGroup(group, texts)
-  }),
-  {}
-);

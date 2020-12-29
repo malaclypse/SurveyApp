@@ -5,6 +5,7 @@ import { Redirect } from "react-router";
 import { LanguageDropdown } from "./LanguageDropdown";
 import { EnglishDropdown } from "./EnglishDropdown";
 import { GenderRadio } from "./GenderRadio";
+import { EducationDropdown } from "./EducationDropdown";
 
 export class RegistrationForm extends Component {
   static displayName = RegistrationForm.name;
@@ -18,6 +19,7 @@ export class RegistrationForm extends Component {
       gender: null,
       nativeLanguage: null,
       englishLevel: null,
+      education: null,
       value: "Home",
       redirect: false
     };
@@ -29,7 +31,8 @@ export class RegistrationForm extends Component {
       email: this.state.email,
       gender: this.state.gender,
       nativeLanguage: this.state.nativeLanguage,
-      englishLevel: this.state.englishLevel
+      englishLevel: this.state.englishLevel,
+      education: this.state.education
     };
     console.log(request);
 
@@ -50,6 +53,10 @@ export class RegistrationForm extends Component {
 
   addGender(value) {
     this.setState({ gender: value });
+  }
+
+  addEducationLevel(value) {
+    this.setState({ education: value });
   }
 
   handleRedirect(response) {
@@ -98,6 +105,14 @@ export class RegistrationForm extends Component {
             />
           </Col>
           <Col md={4}>
+            <EducationDropdown
+              name="education"
+              id="education"
+              placeholder="English level(self-assessed)"
+              onChange={this.addEducationLevel.bind(this)}
+            />
+          </Col>
+          <Col md={4}>
             <LanguageDropdown
               name="nativeLanguage"
               id="nativeLanguage"
@@ -106,7 +121,7 @@ export class RegistrationForm extends Component {
             />
           </Col>
           <Col md={4}>
-            <Button>Register</Button>
+            <Button color="primary">Register</Button>
           </Col>
         </Form>
       </React.Fragment>

@@ -8,15 +8,15 @@ import {
   Label
 } from "reactstrap";
 
-export class EnglishDropdown extends Component {
-  static displayName = EnglishDropdown.name;
+export class EducationDropdown extends Component {
+  static displayName = EducationDropdown.name;
 
   constructor(props) {
     super(props);
     this.state = {
       dropdownOpen: false,
       dropDownValue: null,
-      dropDownText: "English level(self- assessed)"
+      dropDownText: "Education level (highest completed)"
     };
 
     this.toggle = this.toggle.bind(this);
@@ -49,12 +49,16 @@ export class EnglishDropdown extends Component {
   render() {
     return (
       <FormGroup>
-        <Label for="englishLevel">Select your English level (optional)</Label>
+        <Label for="englishLevel">
+          Select your highest completed education level (optional)
+        </Label>
 
-        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} outline>
           <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
           <DropdownMenu>
-            <DropdownItem header>English level (self-assessed)</DropdownItem>
+            <DropdownItem header>
+              Education level (highest completed)
+            </DropdownItem>
             <DropdownItem
               id="NoProficiency"
               onClick={event => this.setState({})}

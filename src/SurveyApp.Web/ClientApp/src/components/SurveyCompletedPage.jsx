@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { Redirect } from "react-router";
+import "./SurveyCompletedPage.css";
 
 export class SurveyCompletedPage extends Component {
   static displayName = SurveyCompletedPage.name;
@@ -56,17 +57,15 @@ export class SurveyCompletedPage extends Component {
       <React.Fragment>
         <Row>
           <Col>
-            <Alert color="secondary">
-              <h4 className="alert-heading">Survey completed!</h4>
-              <p>
+            <Alert color="success">
+              <h4 className="alert-heading paragraph">Survey completed!</h4>
+              <p className="paragraph">
                 If you would like to complete another version of this survey,
                 please click below:
               </p>
               <hr />
               <Form className="final" onSubmit={e => this.submitForm(e)}>
-                <Button outline color="primary">
-                  Start new survey
-                </Button>
+                <Button color="primary">Start new survey</Button>
               </Form>
             </Alert>
           </Col>

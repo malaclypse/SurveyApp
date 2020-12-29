@@ -3,8 +3,8 @@ import { Route } from "react-router";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import { LoginForm } from "./components/LoginForm";
-import { RegistrationForm } from "./components/RegistrationForm";
-import { Survey } from "./components/Survey";
+import { RegistrationForm } from "./components/registration/RegistrationForm";
+import { Survey } from "./components/survey/Survey";
 import { SurveyCompletedPage } from "./components/SurveyCompletedPage";
 import "./custom.css";
 

@@ -3,12 +3,11 @@ import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import { colors } from "@atlaskit/theme";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Form, Button, Row, Col, Alert, UncontrolledAlert } from "reactstrap";
+import { Form, Button, Row, Col, UncontrolledAlert } from "reactstrap";
 import axios from "axios";
 import { Redirect } from "react-router";
 import Column from "./column";
 import reorder, { reorderQuoteMap } from "./reorder";
-import { grid } from "./constants";
 
 const ParentContainer = styled.div`
   /* height: ${({ height }) => height}; */
@@ -33,13 +32,6 @@ const InitialArea = styled.div`
   height: fit-content;
 `;
 
-const ButtonContainer = styled.div`
-  padding: grid;
-  margin: ${grid}px;
-  display: flex;
-  justifycontent: right;
-`;
-
 export class Board extends Component {
   /* eslint-disable react/sort-comp */
   static defaultProps = {
@@ -56,6 +48,17 @@ export class Board extends Component {
   };
 
   boardRef;
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.initial !== this.props.initial) {
+      this.setState({
+        columns: this.props.initial,
+        ordered: Object.keys(this.props.initial),
+        texts: this.props.texts,
+        groups: this.props.groups
+      });
+    }
+  }
 
   onDragEnd = result => {
     if (result.combine) {
@@ -120,7 +123,7 @@ export class Board extends Component {
     console.log("source: " + source.droppableId);
     console.log("destination: " + destination.droppableId);
     console.log("item: " + result.draggableId);
-    console.log("columns: " + JSON.stringify(this.state.columns["0"]));
+    console.log("columns: " + JSON.stringify(this.state.columns[0]));
   };
 
   submitForm(e) {
@@ -135,6 +138,7 @@ export class Board extends Component {
     //    url: "/api/survey",
     //    data: request
     //}).then(response => this.handleRedirect(response));
+
     if (this.state.columns["0"].length === 0) {
       this.setState({ redirect: true });
     } else {
@@ -161,6 +165,9 @@ export class Board extends Component {
     const ordered = this.state.ordered;
     const { containerHeight } = this.props;
 
+    console.log("state: " + JSON.stringify(this.state.columns));
+    console.log("props: " + JSON.stringify(this.props.initial));
+
     const board = (
       <Droppable
         droppableId="board"
@@ -168,7 +175,6 @@ export class Board extends Component {
         direction="horizontal"
         ignoreContainerClipping={Boolean(containerHeight)}
         isCombineEnabled={this.props.isCombineEnabled}
-        canDragInteractiveElements
       >
         {(provided, snapshot) => (
           <React.Fragment>
@@ -177,7 +183,7 @@ export class Board extends Component {
                 key={"0"}
                 index={0}
                 title={"0"}
-                texts={columns[0]}
+                texts={columns["0"]}
                 isScrollable={this.props.withScrollableColumns}
                 isCombineEnabled={this.props.isCombineEnabled}
                 isInitialArea
@@ -186,7 +192,7 @@ export class Board extends Component {
             <Container ref={provided.innerRef} {...provided.droppableProps}>
               {ordered.map(
                 (key, index) =>
-                  (key != 0 || key != "0") && (
+                  (key != 0 || key !== "0") && (
                     <Column
                       key={key}
                       index={index}
@@ -203,6 +209,7 @@ export class Board extends Component {
         )}
       </Droppable>
     );
+    console.log("columns: " + JSON.stringify(this.state.columns[0]));
 
     return (
       <React.Fragment>
