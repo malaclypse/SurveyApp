@@ -21,6 +21,13 @@ namespace SurveyApp.Services
             _dbContext = dbContext;
         }
 
+		public async Task<Survey> Get( int surveyId)
+		{
+            var userSurvey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.SurveyId == surveyId );
+            return userSurvey.ToSurveyModel();
+
+        }
+
         public async Task<IEnumerable<Survey>> GetAll(string email)
         {
             var userSurveys = await _dbContext.Survey.Where(survey => survey.UserEmail == email).ToListAsync();
@@ -52,5 +59,27 @@ namespace SurveyApp.Services
 
             return survey.ToSurveyModel();
         }
+
+		public async Task<Survey> UpdateAsync(int surveyId, UpdateSurveyRequest updateRequest)
+		{
+            var userSurvey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.SurveyId == surveyId );
+			if (updateRequest.IsCompleted.HasValue)
+			{
+                userSurvey.IsCompleted = updateRequest.IsCompleted.Value;
+                if(updateRequest.IsCompleted.Value)
+				{
+                    userSurvey.FinishedOnDate = DateTime.UtcNow;
+				}
+			}
+            if (updateRequest.IsDeleted.HasValue)
+            {
+                userSurvey.IsDeleted = updateRequest.IsDeleted.Value;
+                userSurvey.LastModifiedDate = DateTime.UtcNow;
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return userSurvey.ToSurveyModel();
+        }
+
     }
 }

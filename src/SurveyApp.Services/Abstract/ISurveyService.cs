@@ -11,5 +11,9 @@ namespace SurveyApp.Services.Abstract
         Task<Survey> InsertAsync(string email);
 
         Task<IEnumerable<Survey>> GetAll(string email);
+
+        Task<Survey> Get( int surveyId);
+
+        Task<Survey> UpdateAsync(int surveyId, UpdateSurveyRequest updateRequest);
     }
 }
