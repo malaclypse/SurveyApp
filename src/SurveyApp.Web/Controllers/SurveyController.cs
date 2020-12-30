@@ -19,15 +19,15 @@
 
         [HttpPost]
 
-        public async Task<ActionResult<Survey>> Post([FromRoute] string email)
+        public async Task<ActionResult<Survey>> Post([FromRoute] string userEmail)
         {
-            var user = await _userService.GetAsync(email);
+            var user = await _userService.GetAsync(userEmail);
             if (user == null)
             {
                 return NotFound(user);
             }
 
-            var survey = await _surveyService.InsertAsync(email);
+            var survey = await _surveyService.InsertAsync(userEmail);
 
             return new ObjectResult(survey) { StatusCode = 200 };
         }
