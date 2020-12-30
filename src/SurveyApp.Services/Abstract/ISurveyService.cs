@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SurveyApp.Services.Abstract
 {
-	public interface IGroupService
-	{
-		Task<IEnumerable<Group>> GetAllAsync();
-	}
+    public interface ISurveyService
+    {
+        Task<Survey> InsertAsync(string email);
+    }
 }

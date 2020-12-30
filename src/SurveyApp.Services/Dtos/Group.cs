@@ -4,7 +4,8 @@ using System.Text;
 
 namespace SurveyApp.Services.Dtos
 {
-	class Group
+	public class Group
 	{
-	}
+        public int GroupId { get; set; }
+    }
 }
