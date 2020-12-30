@@ -13,5 +13,7 @@ namespace SurveyApp.Services.Abstract
         Task<IEnumerable<Survey>> GetAll(string email);
 
         Task<Survey> Get( int surveyId);
+
+        Task<Survey> UpdateAsync(int surveyId, UpdateSurveyRequest updateRequest);
     }
 }

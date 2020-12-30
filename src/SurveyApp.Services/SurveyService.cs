@@ -59,5 +59,27 @@ namespace SurveyApp.Services
 
             return survey.ToSurveyModel();
         }
+
+		public async Task<Survey> UpdateAsync(int surveyId, UpdateSurveyRequest updateRequest)
+		{
+            var userSurvey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.SurveyId == surveyId );
+			if (updateRequest.IsCompleted.HasValue)
+			{
+                userSurvey.IsCompleted = updateRequest.IsCompleted.Value;
+                if(updateRequest.IsCompleted.Value)
+				{
+                    userSurvey.FinishedOnDate = DateTime.UtcNow;
+				}
+			}
+            if (updateRequest.IsDeleted.HasValue)
+            {
+                userSurvey.IsDeleted = updateRequest.IsDeleted.Value;
+                userSurvey.LastModifiedDate = DateTime.UtcNow;
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return userSurvey.ToSurveyModel();
+        }
+
     }
 }
