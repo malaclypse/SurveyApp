@@ -9,5 +9,7 @@ namespace SurveyApp.Services.Abstract
     public interface ISurveyService
     {
         Task<Survey> InsertAsync(string email);
+
+        Task<IEnumerable<Survey>> GetAll(string email);
     }
 }
