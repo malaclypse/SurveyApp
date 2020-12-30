@@ -8,6 +8,6 @@ namespace SurveyApp.Services.Abstract
 {
 	public interface IGroupService
 	{
-		Task<IEnumerable<TextEntry>> GetAllAsync();
+		Task<IEnumerable<Group>> GetAllAsync();
 	}
 }
