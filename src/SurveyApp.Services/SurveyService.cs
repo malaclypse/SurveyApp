@@ -21,6 +21,13 @@ namespace SurveyApp.Services
             _dbContext = dbContext;
         }
 
+		public async Task<Survey> Get( int surveyId)
+		{
+            var userSurvey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.SurveyId == surveyId );
+            return userSurvey.ToSurveyModel();
+
+        }
+
         public async Task<IEnumerable<Survey>> GetAll(string email)
         {
             var userSurveys = await _dbContext.Survey.Where(survey => survey.UserEmail == email).ToListAsync();

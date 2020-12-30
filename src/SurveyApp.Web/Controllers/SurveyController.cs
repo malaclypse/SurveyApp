@@ -49,5 +49,21 @@
             var surveys = await _surveyService.GetAll(userEmail);
             return new ObjectResult(surveys) { StatusCode = 200 };
         }
+
+        [HttpGet("{surveyId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IEnumerable<Survey>>> Get([FromRoute] int surveyId)
+        {
+            var survey = await _surveyService.Get(surveyId);
+
+            if (survey == null)
+            {
+                return NotFound(survey);
+            }
+
+            return new ObjectResult(survey) { StatusCode = 200 };
+        }
     }
+
 }
