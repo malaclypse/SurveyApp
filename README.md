@@ -39,8 +39,8 @@ Diagram:
 | UserController      | user                              | POST   | CreateUserRequest   | User                   | Create new user record                                              | DONE        |
 | UserController      | user/{email}                      | PUT    | UpdateUserRequest   | User                   | Update an existing user record                                      | DONE        |
 | TextEntryController | textEntry                         | GET    | -                   | IEnumerable<TextEntry> | Gets a list of all texts                                            | DONE (Samuela) |
-| CategoryController  | category                          | GET    | -                   | IEnumerable<Category>  | Gets a list of all categories                                       | In progress (Tsveti) |
-| SurveyController    | user/{email}/survey               | POST   | CreateSurveyRequest | Survey                 | Create new survey record                                            | In progress (Samuela) |
+| CategoryController  | category                          | GET    | -                   | IEnumerable<Category>  | Gets a list of all categories                                       | DONE (Tsveti) |
+| SurveyController    | user/{email}/survey               | POST   | CreateSurveyRequest | Survey                 | Create new survey record                                            | DONE(Samuela) |
 | SurveyController    | user/{email}/survey               | GET    | -                   | IEnumerable<Survey>    | Get specific survey by id                                           | In progress (Samuela) |
 | SurveyController    | user/{email}/survey/{id}          | GET    | -                   | Survey                 | Get specific survey by id                                           | In progress (Tsveti)|
 | SurveyController    | user/{email}/survey/{id}          | PUT    | UpdateSurveyRequest | Survey                 | Updates the survey record, for example when the survey is submitted | In progress (Tsveti) |
