@@ -38,12 +38,12 @@ Diagram:
 | UserController      | user/{email}                      | GET    | -                   | User                   | Get a user by email                                                 | DONE        |
 | UserController      | user                              | POST   | CreateUserRequest   | User                   | Create new user record                                              | DONE        |
 | UserController      | user/{email}                      | PUT    | UpdateUserRequest   | User                   | Update an existing user record                                      | DONE        |
-| TextEntryController | textEntry                         | GET    | -                   | IEnumerable<TextEntry> | Gets a list of all texts                                            | Not started |
-| CategoryController  | category                          | GET    | -                   | IEnumerable<Category>  | Gets a list of all categories                                       | Not started |
-| SurveyController    | user/{email}/survey               | POST   | CreateSurveyRequest | Survey                 | Create new survey record                                            | Not started |
-| SurveyController    | user/{email}/survey               | GET    | -                   | IEnumerable<Survey>    | Get specific survey by id                                           | Not started |
-| SurveyController    | user/{email}/survey/{id}          | GET    | -                   | Survey                 | Get specific survey by id                                           | Not started |
-| SurveyController    | user/{email}/survey/{id}          | PUT    | UpdateSurveyRequest | Survey                 | Updates the survey record, for example when the survey is submitted | Not started |
+| TextEntryController | textEntry                         | GET    | -                   | IEnumerable<TextEntry> | Gets a list of all texts                                            | In progress (Samuela) |
+| CategoryController  | category                          | GET    | -                   | IEnumerable<Category>  | Gets a list of all categories                                       | In progress (Tsveti) |
+| SurveyController    | user/{email}/survey               | POST   | CreateSurveyRequest | Survey                 | Create new survey record                                            | In progress (Samuela) |
+| SurveyController    | user/{email}/survey               | GET    | -                   | IEnumerable<Survey>    | Get specific survey by id                                           | In progress (Samuela) |
+| SurveyController    | user/{email}/survey/{id}          | GET    | -                   | Survey                 | Get specific survey by id                                           | In progress (Tsveti)|
+| SurveyController    | user/{email}/survey/{id}          | PUT    | UpdateSurveyRequest | Survey                 | Updates the survey record, for example when the survey is submitted | In progress (Tsveti) |
 | SurveyController    | user/{email}/survey               | DELETE | -                   | Survey                 | Delete survey record                                                | Not started |
 | MappingController   | user/{email}/survey/{id}/map      | GET    | -                   | IEnumerable<Mapping>   | Get all category-text mappings for a survey                         | Not started |
 | MappingController   | user/{email}/survey/{id}/map/{id} | GET    | -                   | Mapping                | Get a category-text mapping by id                                   | Not started |
