@@ -20,6 +20,13 @@ namespace SurveyApp.Services
         {
             _dbContext = dbContext;
         }
+
+        public async Task<IEnumerable<Survey>> GetAll(string email)
+        {
+            var userSurveys = await _dbContext.Survey.Where(survey => survey.UserEmail == email).ToListAsync();
+            return userSurveys.Select(survey=>survey.ToSurveyModel());
+        }
+
         public async Task<Survey> InsertAsync(string email)
         {
             Random rnd = new Random();
