@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SurveyApp.Web.Controllers
 {
-	[Route("api/text")]
+	[Route("api/group")]
 	[Produces("application/json")]
 	[ApiController]
 	public class GroupController: ControllerBase
