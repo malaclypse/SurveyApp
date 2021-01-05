@@ -44,10 +44,10 @@ Diagram:
 | SurveyController    | user/{email}/survey               | GET    | -                   | IEnumerable<Survey>    | Get specific survey by id                                           | DONE (Samuela) |
 | SurveyController    | user/{email}/survey/{id}          | GET    | -                   | Survey                 | Get specific survey by id                                           | DONE (Tsveti)|
 | SurveyController    | user/{email}/survey/{id}          | PUT    | UpdateSurveyRequest | Survey                 | Updates the survey record, for example when the survey is submitted | DONE (Tsveti) |
-| MappingController   | user/{email}/survey/{id}/map      | GET    | -                   | IEnumerable<Mapping>   | Get all category-text mappings for a survey                         | Not started |
-| MappingController   | user/{email}/survey/{id}/map/{id} | GET    | -                   | Mapping                | Get a category-text mapping by id                                   | Not started |
-| MappingController   | user/{email}/survey/{id}/map/{id} | DELETE | -                   | -                      | Delete a category-text mapping                                      | Not started |
- | MappingController   | user/{email}/survey/{id}/map     | POST   | CreateMappingRequest| -                | Create a category-text mapping                                | Not started |
+| MappingController   | user/{email}/survey/{id}/map      | GET    | -                   | IEnumerable<Mapping>   | Get all category-text mappings for a survey                         | DONE (kterziev) |
+| MappingController   | user/{email}/survey/{id}/map/{id} | GET    | -                   | Mapping                | Get a category-text mapping by id                                   | DONE (kterziev) |
+| MappingController   | user/{email}/survey/{id}/map/{id} | DELETE | -                   | -                      | Delete a category-text mapping                                      | DONE (kterziev) |
+ | MappingController   | user/{email}/survey/{id}/map     | POST   | CreateMappingRequest| -                | Create a category-text mapping                                | DONE (kterziev) |
 
 <br/>
 The Postman collection with the first three working endpoints can be found here: [Postman](/docs/Survey API.postman_collection.json)
