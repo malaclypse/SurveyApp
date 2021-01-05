@@ -141,7 +141,10 @@
                 var survey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.UserEmail == email && survey.SurveyId == mappingRequest.SurveyId);
                 if (survey != null)
                 {
-                    var mappings = await _dbContext.GroupTextMapping.Where(mapping => mapping.Survey.SurveyId == mappingRequest.SurveyId).ToListAsync();
+                    var mappings = await _dbContext.GroupTextMapping
+                        .Where(mapping => mapping.Survey.SurveyId == mappingRequest.SurveyId 
+                                       && mapping.TextEntry.TextId == mappingRequest.TextId)
+                        .ToListAsync();
                     foreach (var mapping in mappings)
                     {
                         mapping.IsDeleted = true;
