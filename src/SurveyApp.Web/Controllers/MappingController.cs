@@ -24,7 +24,7 @@
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Mapping>>> Get([FromRoute] string userEmail, [FromRoute] int surveyId)
         {
-            var mappings = await _mappingService.GetSurveyAsync(userEmail, surveyId);
+            var mappings = await _mappingService.GetAllMappingsForSurvey(userEmail, surveyId);
 
             if (mappings == null)
             {
@@ -49,7 +49,7 @@
             return new ObjectResult(mapping) { StatusCode = 200 };
         }
 
-        [HttpGet("{mappingId}")]
+        [HttpDelete("{mappingId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Mapping>> Delete([FromRoute] string userEmail, [FromRoute] int surveyId, [FromRoute] int mappingId)
@@ -64,7 +64,7 @@
             return new ObjectResult(mapping) { StatusCode = 200 };
         }
 
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Mapping>> Post([FromRoute] string userEmail, [FromRoute] int surveyId, [FromBody] CreateMappingRequest request)

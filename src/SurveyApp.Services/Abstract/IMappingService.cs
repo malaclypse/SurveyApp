@@ -6,7 +6,7 @@
 
     public interface IMappingService
     {
-        public Task<IEnumerable<Mapping>> GetSurveyAsync(string email, int surveyId);
+        public Task<IEnumerable<Mapping>> GetAllMappingsForSurvey(string email, int surveyId);
 
         public Task<Mapping> GetSurveyMappingAsync(string email, int surveyId, int mappingId);
 

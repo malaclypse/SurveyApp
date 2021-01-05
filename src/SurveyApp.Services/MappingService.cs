@@ -55,7 +55,7 @@
             }
         }
 
-        public async Task<IEnumerable<Mapping>> GetSurveyAsync(string email, int surveyId)
+        public async Task<IEnumerable<Mapping>> GetAllMappingsForSurvey(string email, int surveyId)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -66,7 +66,13 @@
                 var survey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.UserEmail == email && survey.SurveyId == surveyId);
                 if (survey != null)
                 {
-                    var mappings = await _dbContext.GroupTextMapping.Where(mapping => mapping.Survey.SurveyId == surveyId).ToListAsync();
+                    var mappings = await _dbContext.GroupTextMapping
+                        .Include(mapping => mapping.Group)
+                        .Include(mapping => mapping.Survey)
+                        .Include(mapping => mapping.TextEntry)
+                        .Where(mapping => mapping.Survey.SurveyId == surveyId)
+                        .ToListAsync();
+
                     return mappings.Select(mapping => new Mapping()
                         {
                             MappingId = mapping.MappingId,
@@ -99,14 +105,18 @@
                 var survey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.UserEmail == email && survey.SurveyId == surveyId);
                 if (survey != null)
                 {
-                    var mapping = await _dbContext.GroupTextMapping.SingleOrDefaultAsync(mapping => mapping.Survey.SurveyId == surveyId && mapping.MappingId == mappingId);
+                    var mapping = await _dbContext.GroupTextMapping
+                        .Include(mapping => mapping.Group)
+                        .Include(mapping => mapping.Survey)
+                        .Include(mapping => mapping.TextEntry)
+                        .SingleOrDefaultAsync(mapping => mapping.Survey.SurveyId == surveyId && mapping.MappingId == mappingId);
+
                     return new Mapping()
                     {
                         MappingId = mapping.MappingId,
                         TextEntryTextId = mapping.TextEntry.TextId,
                         GroupId = mapping.Group.GroupId,
                         SurveyId = mapping.Survey.SurveyId
-
                     };
                 }
                 else
@@ -137,8 +147,8 @@
                         mapping.IsDeleted = true;
                         mapping.LastModifiedDate = DateTime.UtcNow;
                     }
-                    var text = await _dbContext.TextEntry.SingleOrDefaultAsync(text => text.TextId == mappingRequest.textId);
-                    var group = await _dbContext.Group.SingleOrDefaultAsync(group => group.GroupId == mappingRequest.groupId);
+                    var text = await _dbContext.TextEntry.SingleOrDefaultAsync(text => text.TextId == mappingRequest.TextId);
+                    var group = await _dbContext.Group.SingleOrDefaultAsync(group => group.GroupId == mappingRequest.GroupId);
 
                     var map = new GroupTextMappingEntity()
                     {
