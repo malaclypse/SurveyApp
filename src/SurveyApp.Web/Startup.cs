@@ -39,6 +39,8 @@ namespace SurveyApp.Web
                 options.UseMySQL(Configuration["ConnectionStrings:SurveyDatabase"]));
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<ISurveyService, SurveyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

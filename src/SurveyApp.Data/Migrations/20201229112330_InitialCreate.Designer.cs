@@ -9,7 +9,7 @@ using SurveyApp.Data;
 namespace SurveyApp.Data.Migrations
 {
     [DbContext(typeof(SurveyContext))]
-    [Migration("20201223135916_InitialCreate")]
+    [Migration("20201229112330_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,12 +73,6 @@ namespace SurveyApp.Data.Migrations
                     b.Property<int?>("SurveyId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SurveyUserEmail")
-                        .HasColumnType("varchar(254)");
-
-                    b.Property<int?>("SurveyVariantId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TextEntryTextId")
                         .HasColumnType("int");
 
@@ -86,9 +80,9 @@ namespace SurveyApp.Data.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("TextEntryTextId");
+                    b.HasIndex("SurveyId");
 
-                    b.HasIndex("SurveyId", "SurveyUserEmail", "SurveyVariantId");
+                    b.HasIndex("TextEntryTextId");
 
                     b.ToTable("GroupTextMapping");
                 });
@@ -97,13 +91,6 @@ namespace SurveyApp.Data.Migrations
                 {
                     b.Property<int>("SurveyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("varchar(254)");
-
-                    b.Property<int>("VariantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
@@ -121,13 +108,18 @@ namespace SurveyApp.Data.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime");
 
-                    b.HasKey("SurveyId", "UserEmail", "VariantId");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("varchar(254)");
 
-                    b.HasIndex("UserEmail");
+                    b.Property<int>("VariantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SurveyId");
 
                     b.HasIndex("VariantId");
 
-                    b.HasIndex("SurveyId", "UserEmail", "VariantId")
+                    b.HasIndex("UserEmail", "VariantId")
                         .IsUnique();
 
                     b.ToTable("Survey");
@@ -6358,13 +6350,13 @@ namespace SurveyApp.Data.Migrations
                         .WithMany()
                         .HasForeignKey("GroupId");
 
+                    b.HasOne("SurveyApp.Data.Models.SurveyEntity", "Survey")
+                        .WithMany("Mappings")
+                        .HasForeignKey("SurveyId");
+
                     b.HasOne("SurveyApp.Data.Models.TextEntryEntity", "TextEntry")
                         .WithMany()
                         .HasForeignKey("TextEntryTextId");
-
-                    b.HasOne("SurveyApp.Data.Models.SurveyEntity", "Survey")
-                        .WithMany("Mappings")
-                        .HasForeignKey("SurveyId", "SurveyUserEmail", "SurveyVariantId");
                 });
 
             modelBuilder.Entity("SurveyApp.Data.Models.SurveyEntity", b =>
