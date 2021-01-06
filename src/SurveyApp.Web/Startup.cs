@@ -41,6 +41,7 @@ namespace SurveyApp.Web
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<ISurveyService, SurveyService>();
+            services.AddScoped<IMappingService, MappingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
