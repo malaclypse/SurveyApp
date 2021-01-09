@@ -7,5 +7,7 @@
         public string NativeLanguage { get; set; }
 
         public string Gender { get; set; }
+
+        public string Education { get; set; }
     }
 }

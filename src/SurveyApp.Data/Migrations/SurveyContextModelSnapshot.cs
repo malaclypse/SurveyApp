@@ -570,6 +570,9 @@ namespace SurveyApp.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("Education")
+                        .HasColumnType("int");
+
                     b.Property<int?>("EnglishLevel")
                         .HasColumnType("int");
 

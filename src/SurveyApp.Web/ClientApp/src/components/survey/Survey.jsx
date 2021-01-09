@@ -1,6 +1,6 @@
 ﻿import React, { Component } from "react";
 import { Board } from "./Board";
-//import { texts, groups } from "./data";
+import axios from "axios";
 
 export class Survey extends Component {
   static displayName = Survey.name;
@@ -8,10 +8,32 @@ export class Survey extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: this.props.email,
       texts: [],
-      groups: []
+      groups: [],
+      email: sessionStorage.getItem("email")
     };
+
+    this.handleTextResponse.bind(this);
+    this.getSurveyForUser.bind(this);
+    this.populateGroups(this);
+    this.populateTexts(this);
+  }
+
+  getSurveyForUser(email) {
+    axios({
+      method: "POST",
+      url: `/api/user/${email}/survey`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Access-Control-Allow-Origin": "*"
+      },
+      data: null
+    }).then(response =>
+      this.setState({
+        surveyId: response.data.surveyId,
+        variantId: response.data.variantId
+      })
+    );
   }
 
   populateGroups() {
@@ -27,67 +49,39 @@ export class Survey extends Component {
     });
   }
 
+  handleTextResponse(response) {
+    var texts = response.data;
+    texts.forEach(text => (text.group = 0));
+    texts.forEach(text => (text.id = text.textId));
+    this.setState({ texts: texts });
+  }
+
   populateTexts() {
-    this.setState({
-      texts: [
-        {
-          id: 1,
-          text:
-            "text 1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 2,
-          text:
-            "text 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 3,
-          text:
-            "text 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 4,
-          text:
-            "text 4 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 5,
-          text:
-            "text 5 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 6,
-          text:
-            "text 6 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 7,
-          text:
-            "text 7 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        },
-        {
-          id: 8,
-          text:
-            "text 8 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-          group: 0
-        }
-      ]
-    });
+    if (this.state.variantId === undefined) {
+      this.getSurveyForUser(this.state.email);
+    }
+    axios({
+      method: "GET",
+      url: "/api/text",
+      params: { variantId: this.state.variantId | 2 }
+    }).then(response => this.handleTextResponse(response));
   }
 
   componentDidMount() {
+    this.getSurveyForUser(this.state.email);
     this.populateGroups();
     this.populateTexts();
   }
 
   render() {
+    if (this.state.variantId === undefined) {
+      this.getSurveyForUser(this.state.email);
+    }
+
+    if (this.state.texts === undefined) {
+      this.populateTexts();
+    }
+
     const getByGroup = (group, items) =>
       items.filter(text => text.group === group.groupId);
 

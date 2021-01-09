@@ -13,7 +13,8 @@
                 Email = user.Email,
                 EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
                 Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
-                NativeLanguage = user.NativeLanguage
+                NativeLanguage = user.NativeLanguage,
+                Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true)
             };
         }
 
@@ -24,8 +25,9 @@
                 Email = email,
                 EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
                 Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
-                NativeLanguage = user.NativeLanguage
-            };
+                NativeLanguage = user.NativeLanguage,
+                Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true)
+        };
         }
 
         public static UserEntity UpdateUserEntity(this UserEntity userEntity, UpdateUserRequest user)
@@ -33,7 +35,8 @@
             userEntity.EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true);
             userEntity.Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true);
             userEntity.NativeLanguage = user.NativeLanguage;
-            
+            userEntity.Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true);
+
             return userEntity;
         }
 
@@ -44,7 +47,8 @@
                 Email = userEntity.Email,
                 EnglishLevel = userEntity.EnglishLevel?.ToString(),
                 Gender = userEntity.Gender?.ToString(),
-                NativeLanguage = userEntity.NativeLanguage
+                NativeLanguage = userEntity.NativeLanguage,
+                Education = userEntity.Education?.ToString()
             };
         }
     }

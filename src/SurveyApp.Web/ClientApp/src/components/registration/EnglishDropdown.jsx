@@ -51,7 +51,7 @@ export class EnglishDropdown extends Component {
       <FormGroup>
         <Label for="englishLevel">Select your English level (optional)</Label>
 
-        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} outline>
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>English level (self-assessed)</DropdownItem>

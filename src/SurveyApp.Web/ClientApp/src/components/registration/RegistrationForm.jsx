@@ -58,14 +58,13 @@ export class RegistrationForm extends Component {
   addEducationLevel(value) {
     this.setState({ education: value });
   }
-
+  addEmail(event) {
+    sessionStorage.setItem("email", event.target.value);
+    this.setState({ email: event.target.value });
+  }
   handleRedirect(response) {
-    this.setState({ redirect: true });
     console.log(response.data);
-    console.log(response.status);
-    console.log(response.statusText);
-    console.log(response.headers);
-    console.log(response.config);
+    this.setState({ redirect: true });
   }
 
   render() {
@@ -85,7 +84,7 @@ export class RegistrationForm extends Component {
                 name="email"
                 id="email"
                 placeholder="Email"
-                onChange={event => this.setState({ email: event.target.value })}
+                onChange={this.addEmail.bind(this)}
               />
             </FormGroup>
           </Col>

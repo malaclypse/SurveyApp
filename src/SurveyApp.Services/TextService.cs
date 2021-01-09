@@ -19,9 +19,11 @@ namespace SurveyApp.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<TextEntry>> GetAllAsync()
+        public async Task<IEnumerable<TextEntry>> GetAllAsync(int variantId)
         {
-            var texts = (await _dbContext.TextEntry.ToListAsync()).Select(text => new TextEntry() { TextId = text.TextId, Text = text.Text });
+            var variant = await _dbContext.Variant.SingleAsync(variant => variant.VariantId == variantId);
+            var variantTexts = new List<int> { variant.Text1Id, variant.Text2Id, variant.Text3Id, variant.Text4Id, variant.Text5Id, variant.Text6Id, variant.Text7Id, variant.Text8Id };
+            var texts = (await _dbContext.TextEntry.Where(text => variantTexts.Contains(text.TextId)).ToListAsync()).Select(text => new TextEntry() { TextId = text.TextId, Text = text.Text });
             return texts;
         }
 

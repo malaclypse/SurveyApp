@@ -40,6 +40,7 @@ namespace SurveyApp.Web
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<ITextService, TextService>();
             services.AddScoped<ISurveyService, SurveyService>();
             services.AddScoped<IMappingService, MappingService>();
         }

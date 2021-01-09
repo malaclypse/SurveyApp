@@ -23,9 +23,9 @@ namespace SurveyApp.Web.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<TextEntry>>> Get()
+        public async Task<ActionResult<IEnumerable<TextEntry>>> Get([FromQuery] int variantId)
         {
-            var texts = await _textService.GetAllAsync();
+            var texts = await _textService.GetAllAsync(variantId);
             if (texts == null)
             {
                 return NotFound(texts);

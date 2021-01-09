@@ -53,47 +53,26 @@ export class EducationDropdown extends Component {
           Select your highest completed education level (optional)
         </Label>
 
-        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} outline>
+        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>
               Education level (highest completed)
             </DropdownItem>
-            <DropdownItem
-              id="NoProficiency"
-              onClick={event => this.setState({})}
-            >
-              0 - No Proficiency
+            <DropdownItem id="HighSchool" onClick={event => this.setState({})}>
+              High School
             </DropdownItem>
-            <DropdownItem
-              id="ElementaryProficiency"
-              onClick={this.handleOnChange}
-            >
-              1 - Elementary Proficiency
+            <DropdownItem id="BachelorsDegree" onClick={this.handleOnChange}>
+              Bachelors Degree
             </DropdownItem>
-            <DropdownItem
-              id="LimitedWorkingProficiency"
-              onClick={this.handleOnChange}
-            >
-              2 - Limited Working Proficiency
+            <DropdownItem id="MastersDegree" onClick={this.handleOnChange}>
+              MastersDegree
             </DropdownItem>
-            <DropdownItem
-              id="ProfessionalProficiency"
-              onClick={this.handleOnChange}
-            >
-              3 - Professional Proficiency
+            <DropdownItem id="DoctorateOrHigher" onClick={this.handleOnChange}>
+              DoctorateOrHigher
             </DropdownItem>
-            <DropdownItem
-              id="FullProfessionalProficiency"
-              onClick={this.handleOnChange}
-            >
-              4 - Full Professional Proficiency
-            </DropdownItem>
-            <DropdownItem
-              id="NativeOrBilingualProficiency"
-              onClick={this.handleOnChange}
-            >
-              5 - Native / Bilingual Proficiency
+            <DropdownItem id="Other" onClick={this.handleOnChange}>
+              Other
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
