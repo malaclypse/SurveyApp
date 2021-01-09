@@ -8,6 +8,6 @@ namespace SurveyApp.Services.Abstract
 {
     public interface ITextService
     {
-        Task<IEnumerable<TextEntry>> GetAllAsync();
+        Task<IEnumerable<TextEntry>> GetAllAsync(int variantId);
     }
 }

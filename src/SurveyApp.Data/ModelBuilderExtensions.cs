@@ -458,7 +458,7 @@ public static class ModelBuilderExtensions
     public static void SeedVariants(this ModelBuilder modelBuilder)
     {
         // read variants from Variants.csv
-        using (var reader = new StreamReader(@".\Variants.csv"))
+        using (var reader = new StreamReader($".{Path.DirectorySeparatorChar}Variants.csv"))
         {
             List<string> listA = new List<string>();
             List<string> listB = new List<string>();

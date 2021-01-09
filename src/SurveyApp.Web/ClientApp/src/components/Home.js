@@ -13,27 +13,23 @@ export class Home extends Component {
 
         <Container className="themed-container" fluid="sm">
           <Row>
-            <NavItem>
-              <h5>
-                If you have registered already, please
-                <Link tag={Link} to="/login">
-                  {" "}
-                  log in.
-                </Link>{" "}
-              </h5>
-            </NavItem>
+            <h5>
+              If you have registered already, please
+              <Link tag={Link} to="/login">
+                {" "}
+                log in.
+              </Link>{" "}
+            </h5>
           </Row>
           <br />
           <Row>
-            <NavItem>
-              <h5>
-                If you are a new user, please
-                <Link tag={Link} to="/register">
-                  {" "}
-                  register.
-                </Link>{" "}
-              </h5>
-            </NavItem>
+            <h5>
+              If you are a new user, please
+              <Link tag={Link} to="/register">
+                {" "}
+                register.
+              </Link>{" "}
+            </h5>
           </Row>
         </Container>
       </div>

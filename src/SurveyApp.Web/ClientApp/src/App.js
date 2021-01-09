@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { Route } from "react-router";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
-import { FetchData } from "./components/FetchData";
-import { Counter } from "./components/Counter";
 import { LoginForm } from "./components/LoginForm";
-import { RegistrationForm } from "./components/RegistrationForm";
-import { Survey } from "./components/Survey";
+import { RegistrationForm } from "./components/registration/RegistrationForm";
+import { Survey } from "./components/survey/Survey";
+import { SurveyCompletedPage } from "./components/SurveyCompletedPage";
 import "./custom.css";
 
 export default class App extends Component {
@@ -16,11 +15,10 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path="/" component={Home} />
-        <Route path="/counter" component={Counter} />
-        <Route path="/fetch-data" component={FetchData} />
         <Route path="/login" component={LoginForm} />
         <Route path="/register" component={RegistrationForm} />
         <Route path="/survey" component={Survey} />
+        <Route path="/surveycompleted" component={SurveyCompletedPage} />
       </Layout>
     );
   }

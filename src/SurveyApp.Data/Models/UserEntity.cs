@@ -9,6 +9,8 @@
         
         public EnglishLevel? EnglishLevel { get; set; }
 
+        public Education? Education { get; set; }
+
         public string NativeLanguage { get; set; }
 
         public Gender? Gender { get; set; }

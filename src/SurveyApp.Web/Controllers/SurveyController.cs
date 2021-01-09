@@ -55,7 +55,7 @@
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Survey>>> Get([FromRoute] int surveyId)
         {
-            var survey = await _surveyService.Get(surveyId);
+            var survey = await _surveyService.GetAsync(surveyId);
 
             if (survey == null)
             {
@@ -75,7 +75,7 @@
                 return NotFound(user);
             }
 
-            var survey = await _surveyService.Get(surveyId);
+            var survey = await _surveyService.GetAsync(surveyId);
             if (survey == null)
             {
                 return NotFound(survey);

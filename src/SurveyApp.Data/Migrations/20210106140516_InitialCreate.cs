@@ -39,6 +39,7 @@ namespace SurveyApp.Data.Migrations
                 {
                     Email = table.Column<string>(maxLength: 254, nullable: false),
                     EnglishLevel = table.Column<int>(nullable: true),
+                    Education = table.Column<int>(nullable: true),
                     NativeLanguage = table.Column<string>(nullable: true),
                     Gender = table.Column<int>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
