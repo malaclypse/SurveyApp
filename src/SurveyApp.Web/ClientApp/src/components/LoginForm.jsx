@@ -17,24 +17,37 @@ export class LoginForm extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    var request = {
-      email: this.state.email
-    };
-    console.log(request);
 
     axios({
-      method: "post",
-      url: "/api/user",
-      data: {
-        request
-      }
-    }).then(() => this.setState({ redirect: true }));
+      method: "get",
+      url: `/api/user/${this.state.email}/`
+    })
+      .then(() => this.setState({ redirect: true }))
+      .catch(error => {
+        if (error.response) {
+          // client received an error response (5xx, 4xx)
+          if (error.response.status === 404) {
+            this.setState({ redirectToRegistration: true });
+          }
+        } else {
+          console.log(error);
+        }
+      });
+  }
+
+  addEmail(event) {
+    sessionStorage.setItem("email", event.target.value);
+    this.setState({ email: event.target.value });
   }
 
   render() {
     const { redirect } = this.state;
+    const { redirectToRegistration } = this.state;
     if (redirect) {
       return <Redirect to="/survey" />;
+    }
+    if (redirectToRegistration) {
+      return <Redirect to="/register" />;
     }
     return (
       <React.Fragment>
@@ -48,6 +61,7 @@ export class LoginForm extends Component {
                 name="email"
                 id="exampleEmail"
                 placeholder="Email"
+                onChange={this.addEmail.bind(this)}
               />
             </FormGroup>
             <Button>Log In</Button>

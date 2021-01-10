@@ -7,7 +7,7 @@ namespace SurveyApp.Services.Dtos
     public class Mapping
     {
         public int MappingId { get; set; }
-        public int TextEntryTextId { get; set; }
+        public int TextId { get; set; }
         public int GroupId { get; set; }
         public int SurveyId { get; set; }
     }

@@ -2,6 +2,16 @@
 import { Board } from "./Board";
 import axios from "axios";
 
+import retry from "retry";
+
+const operation = retry.operation({
+  retries: 5,
+  factor: 3,
+  minTimeout: 1 * 1000,
+  maxTimeout: 60 * 1000,
+  randomize: true
+});
+
 export class Survey extends Component {
   static displayName = Survey.name;
 
@@ -10,7 +20,9 @@ export class Survey extends Component {
     this.state = {
       texts: [],
       groups: [],
-      email: sessionStorage.getItem("email")
+      email: sessionStorage.getItem("email"),
+      surveyId: null,
+      variantId: null
     };
 
     this.handleTextResponse.bind(this);
@@ -19,8 +31,8 @@ export class Survey extends Component {
     this.populateTexts(this);
   }
 
-  getSurveyForUser(email) {
-    axios({
+  async getSurveyForUser(email) {
+    await axios({
       method: "POST",
       url: `/api/user/${email}/survey`,
       headers: {
@@ -28,12 +40,14 @@ export class Survey extends Component {
         "Access-Control-Allow-Origin": "*"
       },
       data: null
-    }).then(response =>
+    }).then(response => {
       this.setState({
         surveyId: response.data.surveyId,
         variantId: response.data.variantId
-      })
-    );
+      });
+      sessionStorage.setItem("surveyId", response.data.surveyId);
+      sessionStorage.setItem("variantId", response.data.variantId);
+    });
   }
 
   populateGroups() {
@@ -62,8 +76,7 @@ export class Survey extends Component {
     }
     axios({
       method: "GET",
-      url: "/api/text",
-      params: { variantId: this.state.variantId | 2 }
+      url: `/api/text?variantId=${this.state.variantId}`
     }).then(response => this.handleTextResponse(response));
   }
 
@@ -74,11 +87,11 @@ export class Survey extends Component {
   }
 
   render() {
-    if (this.state.variantId === undefined) {
+    if (this.state.variantId === null) {
       this.getSurveyForUser(this.state.email);
     }
 
-    if (this.state.texts === undefined) {
+    if (this.state.texts.length === 0) {
       this.populateTexts();
     }
 
@@ -100,6 +113,7 @@ export class Survey extends Component {
           initial={groupTextMap}
           texts={this.state.texts}
           groups={this.state.groups}
+          {...this.state}
         />
       </React.Fragment>
     );

@@ -10,10 +10,13 @@ EXPOSE 80
 EXPOSE 443
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 RUN apt-get install -y nodejs
+RUN apt-get install -y npm
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+
 WORKDIR /src
 COPY ["SurveyApp.Web/SurveyApp.Web.csproj", "SurveyApp.Web/"]
 COPY ["SurveyApp.Services/SurveyApp.Services.csproj", "SurveyApp.Services/"]

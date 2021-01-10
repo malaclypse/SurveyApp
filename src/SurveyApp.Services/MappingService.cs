@@ -1,14 +1,14 @@
 ﻿namespace SurveyApp.Services
 {
+    using Microsoft.EntityFrameworkCore;
     using SurveyApp.Data;
+    using SurveyApp.Data.Models;
     using SurveyApp.Services.Abstract;
     using SurveyApp.Services.Dtos;
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Linq;
-    using Microsoft.EntityFrameworkCore;
-    using SurveyApp.Data.Models;
+    using System.Threading.Tasks;
 
     public class MappingService : IMappingService
     {
@@ -38,7 +38,7 @@
                     return new Mapping()
                     {
                         MappingId = mapping.MappingId,
-                        TextEntryTextId = mapping.TextEntry.TextId,
+                        TextId = mapping.TextEntry.TextId,
                         GroupId = mapping.Group.GroupId,
                         SurveyId = mapping.Survey.SurveyId
 
@@ -55,7 +55,7 @@
             }
         }
 
-        public async Task<IEnumerable<Mapping>> GetAllMappingsForSurvey(string email, int surveyId)
+        public async Task<IEnumerable<Mapping>> GetAllMappingsForSurvey(string email, int surveyId, int? textId)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -66,27 +66,56 @@
                 var survey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.UserEmail == email && survey.SurveyId == surveyId);
                 if (survey != null)
                 {
-                    var mappings = await _dbContext.GroupTextMapping
-                        .Include(mapping => mapping.Group)
-                        .Include(mapping => mapping.Survey)
-                        .Include(mapping => mapping.TextEntry)
-                        .Where(mapping => mapping.Survey.SurveyId == surveyId)
-                        .ToListAsync();
+                    if (!textId.HasValue)
+                    {
 
-                    return mappings.Select(mapping => new Mapping()
+                        var mappings = await _dbContext.GroupTextMapping
+                            .Include(mapping => mapping.Group)
+                            .Include(mapping => mapping.Survey)
+                            .Include(mapping => mapping.TextEntry)
+                            .Where(mapping => mapping.Survey.SurveyId == surveyId)
+                            .ToListAsync();
+
+                        return mappings.Select(mapping => new Mapping()
                         {
                             MappingId = mapping.MappingId,
-                            TextEntryTextId = mapping.TextEntry.TextId,
+                            TextId = mapping.TextEntry.TextId,
                             GroupId = mapping.Group.GroupId,
                             SurveyId = mapping.Survey.SurveyId
 
                         }
-                    );
+                        );
+                    }
+                    else
+                    {
+                        var mappings = await _dbContext.GroupTextMapping
+                            .Include(mapping => mapping.Group)
+                            .Include(mapping => mapping.Survey)
+                            .Include(mapping => mapping.TextEntry)
+                            .Where(mapping => mapping.Survey.SurveyId == surveyId 
+                                           && mapping.TextEntry.TextId == textId
+                                           && mapping.IsDeleted == false)
+                            .ToListAsync();
+
+                        return mappings.Select(mapping => new Mapping()
+                        {
+                            MappingId = mapping.MappingId,
+                            TextId = mapping.TextEntry.TextId,
+                            GroupId = mapping.Group.GroupId,
+                            SurveyId = mapping.Survey.SurveyId
+
+                        });
+
+                    }
                 }
+
+
                 else
                 {
                     return null;
                 }
+
+
             }
             catch (Exception)
             {
@@ -114,7 +143,7 @@
                     return new Mapping()
                     {
                         MappingId = mapping.MappingId,
-                        TextEntryTextId = mapping.TextEntry.TextId,
+                        TextId = mapping.TextEntry.TextId,
                         GroupId = mapping.Group.GroupId,
                         SurveyId = mapping.Survey.SurveyId
                     };
@@ -142,7 +171,7 @@
                 if (survey != null)
                 {
                     var mappings = await _dbContext.GroupTextMapping
-                        .Where(mapping => mapping.Survey.SurveyId == mappingRequest.SurveyId 
+                        .Where(mapping => mapping.Survey.SurveyId == mappingRequest.SurveyId
                                        && mapping.TextEntry.TextId == mappingRequest.TextId)
                         .ToListAsync();
                     foreach (var mapping in mappings)
@@ -168,7 +197,7 @@
                     return new Mapping()
                     {
                         MappingId = map.MappingId,
-                        TextEntryTextId = map.TextEntry.TextId,
+                        TextId = map.TextEntry.TextId,
                         GroupId = map.Group.GroupId,
                         SurveyId = map.Survey.SurveyId
                     };

@@ -58,10 +58,12 @@ export class RegistrationForm extends Component {
   addEducationLevel(value) {
     this.setState({ education: value });
   }
+
   addEmail(event) {
     sessionStorage.setItem("email", event.target.value);
     this.setState({ email: event.target.value });
   }
+
   handleRedirect(response) {
     console.log(response.data);
     this.setState({ redirect: true });
@@ -72,6 +74,7 @@ export class RegistrationForm extends Component {
     if (redirect) {
       return <Redirect to="/survey" />;
     }
+
     return (
       <React.Fragment>
         <h1>Register</h1>

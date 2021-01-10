@@ -23,12 +23,10 @@
         public async Task<ActionResult<User>> Post([FromBody] CreateUserRequest userRequest)
         {
             var user = await _userService.GetAsync(userRequest.Email);
-            if (user != null)
+            if (user == null)
             {
-                return new RedirectResult($"api/user/Get/{userRequest.Email}/");
+                user = await _userService.InsertAsync(userRequest);
             }
-
-            user = await _userService.InsertAsync(userRequest);
 
             return new ObjectResult(user) { StatusCode = 200 };
         }
