@@ -124,6 +124,38 @@ export class Board extends Component {
     console.log("destination: " + destination.droppableId);
     console.log("item: " + result.draggableId);
     console.log("columns: " + JSON.stringify(this.state.columns[0]));
+
+    if (destination.droppableId === 0 || destination.droppableId === "0") {
+      axios({
+        method: "GET",
+        url: `/api/user/${this.props.email}/survey/${
+          this.props.surveyId
+        }/map?textId=${parseInt(result.draggableId)}`
+      }).then(response => {
+        this.setState({ mappingId: response.data.mappingId });
+      });
+
+      if (this.state.mappingId !== undefined) {
+        axios({
+          method: "DELETE",
+          url: `/api/user/${this.props.email}/survey/${
+            this.props.surveyId
+          }/map/${this.state.mappingId}`
+        }).then(response => {});
+      }
+    } else {
+      axios({
+        method: "POST",
+        url: `/api/user/${this.props.email}/survey/${this.props.surveyId}/map`,
+        data: {
+          surveyId: this.props.surveyId,
+          textId: parseInt(result.draggableId),
+          groupId: parseInt(destination.droppableId)
+        }
+      }).then(response => {
+        console.log(JSON.stringify(response));
+      });
+    }
   };
 
   submitForm(e) {
@@ -134,7 +166,7 @@ export class Board extends Component {
     console.log(request);
 
     //axios({
-    //    method: "POST",
+    //    method: "PUT",
     //    url: "/api/survey",
     //    data: request
     //}).then(response => this.handleRedirect(response));
@@ -164,9 +196,6 @@ export class Board extends Component {
     const columns = this.state.columns;
     const ordered = this.state.ordered;
     const { containerHeight } = this.props;
-
-    console.log("state: " + JSON.stringify(this.state.columns));
-    console.log("props: " + JSON.stringify(this.props.initial));
 
     const board = (
       <Droppable

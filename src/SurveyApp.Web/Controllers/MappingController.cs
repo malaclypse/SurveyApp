@@ -18,13 +18,12 @@
             _mappingService = mappingService;
         }
 
-        //[HttpGet("{surveyId}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<Mapping>>> Get([FromRoute] string userEmail, [FromRoute] int surveyId)
+        public async Task<ActionResult<IEnumerable<Mapping>>> Get([FromRoute] string userEmail, [FromRoute] int surveyId, [FromQuery] int? textId )
         {
-            var mappings = await _mappingService.GetAllMappingsForSurvey(userEmail, surveyId);
+            var mappings = await _mappingService.GetAllMappingsForSurvey(userEmail, surveyId, textId);
 
             if (mappings == null)
             {

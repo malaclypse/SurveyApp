@@ -21,6 +21,13 @@ namespace SurveyApp.Web
 
         public IConfiguration Configuration { get; }
 
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>().UseUrls(new[] { "http://0.0.0.0:5001" }); // now the Kestrel server will listen on port 5001!
+            });
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {

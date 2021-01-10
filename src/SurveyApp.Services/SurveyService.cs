@@ -43,12 +43,31 @@ namespace SurveyApp.Services
 
         public async Task<Survey> InsertAsync(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentNullException("Email is mandatory!!");
+            }
+
             Random rnd = new Random();
 
             var user = await _dbContext.User.FindAsync(email);
             var userSurveys = await _dbContext.Survey.Where(survey=>survey.UserEmail==email).ToListAsync();
-            var userVariants = userSurveys.Select(survey => survey.VariantId);
-            var variants = await _dbContext.Variant.Where(variant => !userVariants.Contains(variant.VariantId)).ToListAsync();
+
+            var currentSurvey = userSurveys.SingleOrDefault(survey => survey.IsCompleted == false);
+
+            if (currentSurvey != null)
+            {
+                return currentSurvey.ToSurveyModel();
+            }
+
+            var variants = await _dbContext.Variant.ToListAsync();
+
+            if (userSurveys.Count > 0)
+            {
+                var userVariants = userSurveys.Select(survey => survey.VariantId);
+                variants = await _dbContext.Variant.Where(variant => !userVariants.Contains(variant.VariantId)).ToListAsync();
+            }
+           
             int r = rnd.Next(variants.Count);
             var nextVariant = variants[r];
 
@@ -63,6 +82,7 @@ namespace SurveyApp.Services
 
             await _dbContext.Survey.AddAsync(survey);
             await _dbContext.SaveChangesAsync();
+            
 
             return survey.ToSurveyModel();
         }
