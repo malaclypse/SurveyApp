@@ -1,5 +1,6 @@
 {
   "name": "surveyapp.web",
+  "homepage": "https://nbu-survey.ml",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

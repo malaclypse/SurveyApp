@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using SurveyApp.Data;
 using SurveyApp.Services;
 using SurveyApp.Services.Abstract;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace SurveyApp.Web
 {
@@ -21,23 +22,15 @@ namespace SurveyApp.Web
 
         public IConfiguration Configuration { get; }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>().UseUrls(new[] { "http://0.0.0.0:5001" }); // now the Kestrel server will listen on port 5001!
-            });
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/build";
+                configuration.RootPath = "/var/www/survey-app/publish/ClientApp/build";
             });
 
             services.AddSwaggerGen();
@@ -55,6 +48,11 @@ namespace SurveyApp.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -65,8 +63,7 @@ namespace SurveyApp.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -86,6 +83,7 @@ namespace SurveyApp.Web
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+           
         }
     }
 }

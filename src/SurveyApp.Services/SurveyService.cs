@@ -9,12 +9,14 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SurveyApp.Data.Models;
 using SurveyApp.Services.MappingExtensions;
+using System.Threading;
 
 namespace SurveyApp.Services
 {
     public class SurveyService : ISurveyService
     {
         private readonly SurveyContext _dbContext;
+        protected static SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
 
         public SurveyService(SurveyContext dbContext)
         {
@@ -43,6 +45,23 @@ namespace SurveyApp.Services
 
         public async Task<Survey> InsertAsync(string email)
         {
+            var survey = new Survey();
+            try
+            {
+                await _semaphoreSlim.WaitAsync();
+
+                survey = await InsertSurveyAsync(email);
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
+
+            return survey;
+        }
+
+        private async Task<Survey> InsertSurveyAsync(string email)
+        {
             if (string.IsNullOrWhiteSpace(email))
             {
                 throw new ArgumentNullException("Email is mandatory!!");
@@ -51,7 +70,7 @@ namespace SurveyApp.Services
             Random rnd = new Random();
 
             var user = await _dbContext.User.FindAsync(email);
-            var userSurveys = await _dbContext.Survey.Where(survey=>survey.UserEmail==email).ToListAsync();
+            var userSurveys = await _dbContext.Survey.Where(survey => survey.UserEmail == email).ToListAsync();
 
             var currentSurvey = userSurveys.SingleOrDefault(survey => survey.IsCompleted == false);
 
@@ -67,7 +86,7 @@ namespace SurveyApp.Services
                 var userVariants = userSurveys.Select(survey => survey.VariantId);
                 variants = await _dbContext.Variant.Where(variant => !userVariants.Contains(variant.VariantId)).ToListAsync();
             }
-           
+
             int r = rnd.Next(variants.Count);
             var nextVariant = variants[r];
 
@@ -82,12 +101,12 @@ namespace SurveyApp.Services
 
             await _dbContext.Survey.AddAsync(survey);
             await _dbContext.SaveChangesAsync();
-            
+
 
             return survey.ToSurveyModel();
         }
 
-		public async Task<Survey> UpdateAsync(int surveyId, UpdateSurveyRequest updateRequest)
+        public async Task<Survey> UpdateAsync(int surveyId, UpdateSurveyRequest updateRequest)
 		{
             var userSurvey = await _dbContext.Survey.SingleOrDefaultAsync(survey => survey.SurveyId == surveyId );
 			if (updateRequest.IsCompleted.HasValue)

@@ -2,16 +2,6 @@
 import { Board } from "./Board";
 import axios from "axios";
 
-import retry from "retry";
-
-const operation = retry.operation({
-  retries: 5,
-  factor: 3,
-  minTimeout: 1 * 1000,
-  maxTimeout: 60 * 1000,
-  randomize: true
-});
-
 export class Survey extends Component {
   static displayName = Survey.name;
 
@@ -105,7 +95,7 @@ export class Survey extends Component {
       }),
       {}
     );
-    console.log(JSON.stringify(groupTextMap[0]));
+
     return (
       <React.Fragment>
         <h1>Survey</h1>

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import { colors } from "@atlaskit/theme";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Form, Button, Row, Col, UncontrolledAlert } from "reactstrap";
+import { Form, Button, Row, Col, Alert } from "reactstrap";
 import axios from "axios";
 import { Redirect } from "react-router";
 import Column from "./column";
@@ -161,17 +161,19 @@ export class Board extends Component {
   submitForm(e) {
     e.preventDefault();
     var request = {
-      surveyId: this.state.surveyId
+      surveyId: this.props.surveyId
     };
     console.log(request);
 
-    //axios({
-    //    method: "PUT",
-    //    url: "/api/survey",
-    //    data: request
-    //}).then(response => this.handleRedirect(response));
-
     if (this.state.columns["0"].length === 0) {
+      axios({
+        method: "PUT",
+        url: `/api/user/${this.props.email}/survey/${this.props.surveyId}`,
+        data: {
+          isCompleted: true
+        }
+      }).then(response => this.handleRedirect(response));
+
       this.setState({ redirect: true });
     } else {
       this.setState({ alertVisible: true });
@@ -180,11 +182,10 @@ export class Board extends Component {
 
   handleRedirect(response) {
     this.setState({ redirect: true });
-    console.log(response.data);
-    console.log(response.status);
-    console.log(response.statusText);
-    console.log(response.headers);
-    console.log(response.config);
+  }
+
+  onDismiss(e) {
+    this.setState({ alertVisible: !this.state.alertVisible });
   }
 
   render() {
@@ -238,15 +239,16 @@ export class Board extends Component {
         )}
       </Droppable>
     );
-    console.log("columns: " + JSON.stringify(this.state.columns[0]));
 
     return (
       <React.Fragment>
-        {this.state.alertVisible && (
-          <UncontrolledAlert color="danger">
-            Please group all texts before submitting!
-          </UncontrolledAlert>
-        )}
+        <Alert
+          color="danger"
+          isOpen={this.state.alertVisible}
+          toggle={this.onDismiss.bind(this)}
+        >
+          Please group all texts before submitting!
+        </Alert>
         <Form className="survey" onSubmit={e => this.submitForm(e)}>
           <Row>
             <Col>
