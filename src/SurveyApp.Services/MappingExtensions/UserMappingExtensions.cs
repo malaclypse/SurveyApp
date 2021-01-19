@@ -14,6 +14,7 @@
                 EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
                 Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
                 NativeLanguage = user.NativeLanguage,
+                Country = user.Country,
                 Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true)
             };
         }
@@ -26,6 +27,7 @@
                 EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true),
                 Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
                 NativeLanguage = user.NativeLanguage,
+                Country = user.Country,
                 Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true)
         };
         }
@@ -35,6 +37,7 @@
             userEntity.EnglishLevel = user.EnglishLevel == null ? (EnglishLevel?)null : Enum.Parse<EnglishLevel>(user.EnglishLevel, true);
             userEntity.Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true);
             userEntity.NativeLanguage = user.NativeLanguage;
+            userEntity.Country = user.Country;
             userEntity.Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true);
 
             return userEntity;
@@ -48,6 +51,7 @@
                 EnglishLevel = userEntity.EnglishLevel?.ToString(),
                 Gender = userEntity.Gender?.ToString(),
                 NativeLanguage = userEntity.NativeLanguage,
+                Country = userEntity.Country,
                 Education = userEntity.Education?.ToString()
             };
         }

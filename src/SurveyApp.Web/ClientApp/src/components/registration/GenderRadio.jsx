@@ -16,7 +16,6 @@ export class GenderRadio extends Component {
   render() {
     return (
       <FormGroup>
-        <Label for="gender">Gender (optional)</Label>
         <FormGroup id="gender" check>
           <Label check>
             <Input

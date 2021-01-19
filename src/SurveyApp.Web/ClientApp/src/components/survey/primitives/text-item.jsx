@@ -111,8 +111,8 @@ export default class TextItem extends React.PureComponent {
         >
           {content}
         </BlockQuote>
-        <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalBody>{content}</ModalBody>
+        <Modal isOpen={this.state.modal} toggle={this.toggle} size="lg">
+          <ModalBody>{content.split("\n").map(str => <p>{str}</p>)}</ModalBody>
         </Modal>
       </Container>
     );

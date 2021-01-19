@@ -14,5 +14,7 @@ namespace SurveyApp.Services.Dtos
         public string Gender { get; set; }
 
         public string Education { get; set; }
+
+        public string Country { get; set; }
     }
 }

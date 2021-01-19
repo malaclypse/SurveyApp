@@ -1,16 +1,16 @@
 ﻿import React, { Component } from "react";
 import { FormGroup, Label } from "reactstrap";
-import { languages } from "./languages.js";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import { countries } from "./countries.js";
 
-export class LanguageDropdown extends Component {
-  static displayName = LanguageDropdown.name;
+export class CountryDropdown extends Component {
+  static displayName = CountryDropdown.name;
   constructor(props) {
     super(props);
     this.state = {
       nativeLanguage: null,
-      languages: languages
+      countries: countries
     };
   }
 
@@ -32,13 +32,13 @@ export class LanguageDropdown extends Component {
     return (
       <FormGroup>
         <Autocomplete
-          id="language"
-          options={this.state.languages}
+          id="country"
+          options={this.state.countries}
           getOptionLabel={option => option.name}
           style={{ width: 300 }}
           onChange={(event, value) => this.handleOnChange(event, value)}
           renderInput={params => (
-            <TextField {...params} label="Native language" required />
+            <TextField {...params} label="Country" required />
           )}
         />
       </FormGroup>

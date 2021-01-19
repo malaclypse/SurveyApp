@@ -15,6 +15,8 @@
 
         public Gender? Gender { get; set; }
 
+        public string Country { get; set; }
+
         public DateTime CreatedDate { get; set; }
         
         public DateTime LastModifiedDate { get; set; }

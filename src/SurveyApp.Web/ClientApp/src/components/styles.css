@@ -2,3 +2,14 @@
     font-family: sans-serif;
     text-align: center;
 }
+
+div {
+    white-space: pre-wrap;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #000;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
