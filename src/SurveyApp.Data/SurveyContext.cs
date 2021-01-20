@@ -38,7 +38,8 @@
                 entity.HasIndex(e => e.Email);
                 entity.HasMany(e => e.Surveys);
                 entity.Property(e => e.EnglishLevel);
-                entity.Property(e => e.NativeLanguage);
+                entity.Property(e => e.NativeLanguage).IsRequired();
+                entity.Property(e => e.Country).IsRequired();
                 entity.Property(e => e.LastModifiedDate);
                 entity.Property(e => e.Gender);
                 entity.Property(e => e.CreatedDate).IsRequired();

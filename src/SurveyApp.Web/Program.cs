@@ -20,7 +20,8 @@ namespace SurveyApp.Web
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                webBuilder.UseStartup<Startup>().UseUrls(new[] { "http://0.0.0.0:5001" }); // now the Kestrel server will listen on port 5001!
+                webBuilder.UseStartup<Startup>()
+                    .UseUrls(new[] { "http://0.0.0.0:5001" }); 
             });
     }
 }

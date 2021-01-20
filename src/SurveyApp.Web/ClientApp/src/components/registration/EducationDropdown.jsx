@@ -49,10 +49,6 @@ export class EducationDropdown extends Component {
   render() {
     return (
       <FormGroup>
-        <Label for="englishLevel">
-          Select your highest completed education level (optional)
-        </Label>
-
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
           <DropdownMenu>

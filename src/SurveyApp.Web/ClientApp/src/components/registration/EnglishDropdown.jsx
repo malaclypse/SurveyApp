@@ -49,8 +49,6 @@ export class EnglishDropdown extends Component {
   render() {
     return (
       <FormGroup>
-        <Label for="englishLevel">Select your English level (optional)</Label>
-
         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
           <DropdownToggle caret>{this.state.dropDownText}</DropdownToggle>
           <DropdownMenu>
