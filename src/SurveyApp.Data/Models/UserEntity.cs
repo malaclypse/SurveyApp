@@ -22,5 +22,8 @@
         public DateTime LastModifiedDate { get; set; }
 
         public List<SurveyEntity> Surveys { get; set; }
+
+        public bool? IsInterestedInMoreInfo { get; set; }
+
     }
 }

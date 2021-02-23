@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { FormGroup, Input, Col, Label } from "reactstrap";
+import { FormGroup, Input, Label } from "reactstrap";
 
 export class GenderRadio extends Component {
   static displayName = GenderRadio.name;

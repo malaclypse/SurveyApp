@@ -127,5 +127,9 @@ namespace SurveyApp.Services
             return userSurvey.ToSurveyModel();
         }
 
+        public async Task<IEnumerable<Survey>> GetAllSurveys()
+        {
+            return (await _dbContext.Survey.ToListAsync()).Select(survey => survey.ToSurveyModel());
+        }
     }
 }

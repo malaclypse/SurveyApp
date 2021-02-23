@@ -17,8 +17,8 @@ export class Survey extends Component {
 
     this.handleTextResponse.bind(this);
     this.getSurveyForUser.bind(this);
-    this.populateGroups(this);
-    this.populateTexts(this);
+    this.populateGroups.bind(this);
+    this.populateTexts.bind(this);
   }
 
   async getSurveyForUser(email) {
@@ -77,10 +77,13 @@ export class Survey extends Component {
   }
 
   render() {
-    if (this.state.variantId === null) {
+    if (this.state.variantId === null || this.state.variantId === undefined) {
       this.getSurveyForUser(this.state.email);
     }
 
+    if (this.state.groups === null) {
+      this.populateGroups();
+    }
     if (this.state.texts.length === 0) {
       this.populateTexts();
     }
@@ -98,7 +101,7 @@ export class Survey extends Component {
 
     return (
       <React.Fragment>
-        <h1>Survey</h1>
+        <h1>Text-Emotion Survey</h1>
         <Board
           initial={groupTextMap}
           texts={this.state.texts}

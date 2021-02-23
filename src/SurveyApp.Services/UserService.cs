@@ -1,10 +1,13 @@
 ﻿namespace SurveyApp.Services
 {
+    using Microsoft.EntityFrameworkCore;
     using SurveyApp.Data;
     using SurveyApp.Services.Abstract;
     using SurveyApp.Services.Dtos;
     using SurveyApp.Services.MappingExtensions;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class UserService : IUserService
@@ -14,6 +17,11 @@
         public UserService(SurveyContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            return (await _dbContext.User.ToListAsync()).Select(user => user.ToUserModel());
         }
 
         public async Task<User> GetAsync(string email)

@@ -16,5 +16,7 @@ namespace SurveyApp.Services.Dtos
         public string Education { get; set; }
 
         public string Country { get; set; }
+
+        public bool? IsInterestedInMoreInfo { get; set; }
     }
 }

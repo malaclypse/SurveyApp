@@ -15,7 +15,9 @@
                 Gender = user.Gender == null ? (Gender?)null : Enum.Parse<Gender>(user.Gender, true),
                 NativeLanguage = user.NativeLanguage,
                 Country = user.Country,
-                Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true)
+                Education = user.Education == null ? (Education?)null : Enum.Parse<Education>(user.Education, true),
+                CreatedDate = DateTime.UtcNow,
+                IsInterestedInMoreInfo = user.IsInterestedInMoreInfo
             };
         }
 
@@ -52,7 +54,8 @@
                 Gender = userEntity.Gender?.ToString(),
                 NativeLanguage = userEntity.NativeLanguage,
                 Country = userEntity.Country,
-                Education = userEntity.Education?.ToString()
+                Education = userEntity.Education?.ToString(),
+                IsInterestedInMoreInfo = userEntity.IsInterestedInMoreInfo
             };
         }
     }

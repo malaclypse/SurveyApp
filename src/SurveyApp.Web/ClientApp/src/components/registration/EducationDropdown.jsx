@@ -4,8 +4,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  FormGroup,
-  Label
+  FormGroup
 } from "reactstrap";
 
 export class EducationDropdown extends Component {

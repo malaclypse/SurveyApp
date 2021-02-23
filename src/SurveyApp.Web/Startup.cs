@@ -10,6 +10,9 @@ using SurveyApp.Data;
 using SurveyApp.Services;
 using SurveyApp.Services.Abstract;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace SurveyApp.Web
 {
@@ -43,6 +46,20 @@ namespace SurveyApp.Web
             services.AddScoped<ITextService, TextService>();
             services.AddScoped<ISurveyService, SurveyService>();
             services.AddScoped<IMappingService, MappingService>();
+            services.AddScoped<IPasswordService, PasswordService>();
+
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +85,8 @@ namespace SurveyApp.Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

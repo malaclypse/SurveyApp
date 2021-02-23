@@ -120,10 +120,6 @@ export class Board extends Component {
     this.setState({
       columns: data.quoteMap
     });
-    console.log("source: " + source.droppableId);
-    console.log("destination: " + destination.droppableId);
-    console.log("item: " + result.draggableId);
-    console.log("columns: " + JSON.stringify(this.state.columns[0]));
 
     if (destination.droppableId === 0 || destination.droppableId === "0") {
       axios({
@@ -253,12 +249,15 @@ export class Board extends Component {
           <Row>
             <Col>
               <p>
-                Click on each text to expand it and read it, then group the
-                texts into the five groups below.
-              </p>
-              <p>
-                Your progress is automatically saved on each drop, so you can
-                return later to finish.
+                Click on each text to expand and read. <br />Group the texts by
+                how similar they are according to the emotions they evoked in
+                you. The groups are not labeled intentionally, as the texts may
+                invoke different emotions in each reader. <br />To put texts in
+                the same group drag them to the same container below. You can
+                assign the texts to a maximum of 5 groups (1 to 5). You can
+                change the group you have assigned a text to by dragging it to
+                another container. Your progress is automatically saved on each
+                drop, so you can return later to continue.
               </p>
             </Col>
             <Col lg="auto">

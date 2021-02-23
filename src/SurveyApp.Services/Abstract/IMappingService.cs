@@ -13,5 +13,9 @@
         public Task<Mapping> DeleteSurveyMappingAsync(string email, int surveyId, int mappingId);
 
         public Task<Mapping> InsertSurveyMappingAsync(string email, CreateMappingRequest mappingRequest);
+
+        public Task<IEnumerable<Mapping>> GetAllMappings();
+
+        public Task<string> ExportMatrixCsv();
     }
 }

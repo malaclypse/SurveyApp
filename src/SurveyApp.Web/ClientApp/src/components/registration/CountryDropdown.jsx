@@ -1,5 +1,5 @@
 ﻿import React, { Component } from "react";
-import { FormGroup, Label } from "reactstrap";
+import { FormGroup } from "reactstrap";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { countries } from "./countries.js";
@@ -37,9 +37,7 @@ export class CountryDropdown extends Component {
           getOptionLabel={option => option.name}
           style={{ width: 300 }}
           onChange={(event, value) => this.handleOnChange(event, value)}
-          renderInput={params => (
-            <TextField {...params} label="Country" required />
-          )}
+          renderInput={params => <TextField {...params} label="Country" />}
         />
       </FormGroup>
     );

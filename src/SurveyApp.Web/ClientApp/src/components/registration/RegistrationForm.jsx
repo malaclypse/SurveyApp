@@ -30,6 +30,8 @@ export class RegistrationForm extends Component {
       englishLevel: null,
       education: null,
       country: null,
+      isInterestedInMoreInfo: null,
+
       value: "Home",
       redirect: false,
       validate: {
@@ -72,7 +74,8 @@ export class RegistrationForm extends Component {
       nativeLanguage: this.state.nativeLanguage,
       englishLevel: this.state.englishLevel,
       education: this.state.education,
-      country: this.state.country
+      country: this.state.country,
+      isInterestedInMoreInfo: this.state.isInterestedInMoreInfo
     };
     console.log(request);
 
@@ -102,6 +105,10 @@ export class RegistrationForm extends Component {
   addEducationLevel(value) {
     this.setState({ education: value });
   }
+  addIsInterested(event) {
+    this.setState({ isInterestedInMoreInfo: event.target.checked });
+    console.log(event.target.checked);
+  }
 
   addEmail(event) {
     sessionStorage.setItem("email", event.target.value);
@@ -130,6 +137,7 @@ export class RegistrationForm extends Component {
             </Label>
             <Col sm={4}>
               <Input
+                required
                 type="email"
                 name="email"
                 id="email"
@@ -161,24 +169,15 @@ export class RegistrationForm extends Component {
           <FormGroup row>
             <Label for="country" sm={2}>
               {" "}
-              Country of origin <b>*required </b>{" "}
+              Country of origin{" "}
             </Label>
             <Col sm={4}>
               <CountryDropdown
                 name="country"
                 id="country"
                 placeholder="Country"
-                valid={this.state.validate.countryState === "has-success"}
-                invalid={this.state.validate.countryState === "has-danger"}
                 onChange={this.addCountry.bind(this)}
               />
-              <FormFeedback valid>
-                That's a tasty looking email you've got there.
-              </FormFeedback>
-              <FormFeedback invalid>
-                Uh oh! Looks like there is an issue with your email. Please
-                input a correct email.
-              </FormFeedback>
             </Col>
           </FormGroup>
 
@@ -219,6 +218,19 @@ export class RegistrationForm extends Component {
                 placeholder="English level(self-assessed)"
                 onChange={this.addEducationLevel.bind(this)}
               />
+            </Col>
+          </FormGroup>
+
+          <FormGroup row check>
+            <Col sm={6}>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  onChange={this.addIsInterested.bind(this)}
+                />{" "}
+                Click here if you want to be notified of the scientific analysis
+                of the results of the Text Emotion Survey
+              </Label>
             </Col>
           </FormGroup>
           <FormGroup row>

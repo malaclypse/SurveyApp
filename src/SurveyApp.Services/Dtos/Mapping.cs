@@ -10,5 +10,6 @@ namespace SurveyApp.Services.Dtos
         public int TextId { get; set; }
         public int GroupId { get; set; }
         public int SurveyId { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

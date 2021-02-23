@@ -12,6 +12,8 @@
 
         public DbSet<UserEntity> User { get; set; }
 
+        public DbSet<PasswordEntity> Password { get; set; }
+
         public DbSet<SurveyEntity> Survey { get; set; }
 
         public DbSet<GroupEntity> Group { get; set; }
@@ -39,9 +41,10 @@
                 entity.HasMany(e => e.Surveys);
                 entity.Property(e => e.EnglishLevel);
                 entity.Property(e => e.NativeLanguage).IsRequired();
-                entity.Property(e => e.Country).IsRequired();
+                entity.Property(e => e.Country);
                 entity.Property(e => e.LastModifiedDate);
                 entity.Property(e => e.Gender);
+                entity.Property(e => e.IsInterestedInMoreInfo);
                 entity.Property(e => e.CreatedDate).IsRequired();
             });
 
@@ -97,7 +100,14 @@
                 entity.HasOne(e => e.TextEntry);
                 entity.HasOne(e => e.Group);
             });
-            
+
+            modelBuilder.Entity<PasswordEntity>(entity => {
+                entity.HasKey(e => e.PasswordId);
+                entity.Property(e => e.PasswordId).IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.PasswordHash).IsRequired();
+                entity.Property(e => e.PasswordSalt).IsRequired();
+            });
+
             // This inserts all 20 texts into the db initially if they don't already exist.
             modelBuilder.SeedTexts();
 
