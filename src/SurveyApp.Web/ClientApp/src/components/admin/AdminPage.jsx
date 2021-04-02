@@ -100,7 +100,18 @@ export class AdminPage extends Component {
   }
 
   async getMatrix() {
-    window.location = `/api/admin/matrix`;
+    axios({
+      url: "/api/admin/matrix", //your url
+      method: "GET",
+      responseType: "blob" // important
+    }).then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "matrix.csv"); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
   }
 
   async getMappings() {

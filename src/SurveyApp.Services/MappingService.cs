@@ -229,6 +229,8 @@
 
         public async Task<string> ExportMatrixCsv()
         {
+            var texts = await _dbContext.TextEntry.ToListAsync();
+
             var maps = await _dbContext.GroupTextMapping
                 .Include(map => map.TextEntry)
                 .Include(map => map.Group)
@@ -236,7 +238,7 @@
                 .Where(map => map.IsDeleted == false)
                 .ToListAsync();
 
-            int[,] results = new int[maps.Count + 1, maps.Count + 1];
+            int[,] results = new int[texts.Count + 1, texts.Count + 1];
             
             foreach (var map in maps)
             {
