@@ -10,10 +10,6 @@ export class Footer extends Component {
       <div>
         <Container>
           <hr />
-
-          <NavLink tag={Link} to="https://nbu.bg/en">
-            <div>© New Bulgarian University 2021</div>
-          </NavLink>
           <NavLink tag={Link} to="https://computerscience.nbu.bg/en">
             <div>© NBU, Department of Computer Science 2021</div>
           </NavLink>

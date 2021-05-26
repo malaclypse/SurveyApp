@@ -235,7 +235,8 @@
                 .Include(map => map.TextEntry)
                 .Include(map => map.Group)
                 .Include(map => map.Survey)
-                .Where(map => map.IsDeleted == false)
+                .Where(map => map.IsDeleted == false 
+                    && map.Survey.IsCompleted == true)
                 .ToListAsync();
 
             int[,] results = new int[texts.Count + 1, texts.Count + 1];
